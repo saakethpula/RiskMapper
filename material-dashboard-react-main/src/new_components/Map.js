@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
-const loadGoogleMapsScript = (): Promise<void> => {
+const loadGoogleMapsScript = () => {
     return new Promise((resolve, reject) => {
         if (window.google && window.google.maps) {
             resolve();
@@ -31,13 +31,13 @@ const loadGoogleMapsScript = (): Promise<void> => {
     });
 };
 
-const Map: React.FC = () => {
+const Map = () => {
     const [mapLoaded, setMapLoaded] = useState(false);
-    const mapRef = useRef<HTMLDivElement | null>(null);
-    const mapInstanceRef = useRef<google.maps.Map | null>(null);
-    const markerRef = useRef<google.maps.Marker | null>(null);
-    const [data, setData] = useState<{ hospitals: any[] } | null>(null);
-    const [directionsVisible, setDirectionsVisible] = useState<{ [key: number]: boolean }>({});
+    const mapRef = useRef(null);
+    const mapInstanceRef = useRef(null);
+    const markerRef = useRef(null);
+    const [data, setData] = useState(null);
+    const [directionsVisible, setDirectionsVisible] = useState({});
 
     useEffect(() => {
         loadGoogleMapsScript()
@@ -48,7 +48,7 @@ const Map: React.FC = () => {
     useEffect(() => {
         if (mapLoaded && mapRef.current) {
             mapInstanceRef.current = new google.maps.Map(mapRef.current, {
-                center: { lat: 0, lng: 0 }, 
+                center: { lat: 0, lng: 0 },
                 zoom: 3,
             });
         }
@@ -62,23 +62,23 @@ const Map: React.FC = () => {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude,
                     };
-    
+
                     if (mapInstanceRef.current) {
                         mapInstanceRef.current.setCenter(userLocation);
                         mapInstanceRef.current.setZoom(14);
-    
+
                         // Remove old marker
                         if (markerRef.current) {
                             markerRef.current.setMap(null);
                         }
-    
+
                         // Create new marker
                         markerRef.current = new google.maps.Marker({
                             position: userLocation,
                             map: mapInstanceRef.current,
                             title: "You are here!",
                         });
-    
+
                         // Fetch hospitals from FastAPI backend
                         try {
                             const response = await fetch(
@@ -101,7 +101,7 @@ const Map: React.FC = () => {
         }
     };
 
-    const toggleDirections = (index: number, hospital: any) => {
+    const toggleDirections = (index, hospital) => {
         setDirectionsVisible((prev) => {
             const newState = { ...prev, [index]: !prev[index] };
             if (newState[index]) {
@@ -154,7 +154,7 @@ const Map: React.FC = () => {
                     <div style={{ marginTop: "20px" }}>
                         <h3>Nearby Hospitals:</h3>
                         <div>
-                            {data.hospitals.slice(0, 2).map((hospital: any, index: number) => (
+                            {data.hospitals.slice(0, 2).map((hospital, index) => (
                                 <li key={index}>
                                     <strong>{hospital.name}</strong><br />
                                     {hospital.address}
