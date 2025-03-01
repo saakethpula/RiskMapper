@@ -175,8 +175,8 @@ const Map = () => {
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", textAlign: "center" }}>
-            <div ref={mapRef} style={{ height: "500px", width: "50%" }}></div>
+    <div style={{ display: "flex", justifyContent: "left", textAlign: "center", padding: "20px" }}>
+        <div ref={mapRef} style={{ height: "700px", width: "70%" }}></div>
             <div style={{ marginLeft: "20px", width: "30%" }}>
                 <button onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
                     Find My Location Automatically
@@ -280,7 +280,8 @@ const Map = () => {
                 )}
             </div>
         </div>
-    );
+    </div>
+);
 };
 
 export default Map;
