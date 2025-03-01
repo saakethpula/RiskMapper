@@ -110,6 +110,11 @@ async def get_public_shelters(lat: float, lng: float, radius: int = 10000):
     places = get_places(lat, lng, radius, "shelter")
     return {"public_shelters": places}
 
+@app.get("/hospitals/")
+async def get_hospitals(lat: float, lng: float, radius: int = 10000):
+    places = get_places(lat, lng, radius, "hospital")
+    return {"hospitals": places}
+
 
 @app.get("/public-transportation/")
 async def get_public_transportation(lat: float, lng: float, radius: int = 10000):
