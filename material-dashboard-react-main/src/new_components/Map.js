@@ -83,9 +83,6 @@ const Map = () => {
                         // Set locationFound to true after location is successfully found
                         setLocationFound(true);
                     }
-                },
-                () => {
-                    alert("Error: Could not get location. Please enter your location manually.");
                 }
             );
         } else {
@@ -114,7 +111,7 @@ const Map = () => {
         }
     };
 
-    const findGas = async () => {
+    const findGasstations = async () => {
         if (markerRef.current) {
             const userLocation = markerRef.current.getPosition();
             if (userLocation) {
@@ -123,13 +120,13 @@ const Map = () => {
 
                 try {
                     const response = await fetch(
-                        `http://127.0.0.1:8000/gas_stations/?lat=${lat}&lng=${lng}&radius=10000`
+                        `http://127.0.0.1:8000/gas-stations/?lat=${lat}&lng=${lng}&radius=10000`
                     );
                     const data = await response.json();
-                    setData({ hospitals: data.hospitals });
-                    console.log("Gas Stations:", data.hospitals);
+                    setData({ gas_stations: data.gas_stations });
+                    console.log("Gas Stations:", data.gas_stations);
                 } catch (error) {
-                    console.error("Error fetching Gas Stations:", error);
+                    console.error("Error fetching gas stations:", error);
                 }
             }
         }
@@ -182,8 +179,45 @@ const Map = () => {
             <div ref={mapRef} style={{ height: "500px", width: "50%" }}></div>
             <div style={{ marginLeft: "20px", width: "30%" }}>
                 <button onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
-                    Find My Location
+                    Find My Location Automatically
                 </button>
+
+                <input
+                    type="text"
+                    placeholder="Enter location manually"
+                    style={{ marginTop: "10px", padding: "10px", width: "100%" }}
+                    onKeyPress={(event) => {
+                        if (event.key === "Enter") {
+                            const geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({ address: event.target.value }, (results, status) => {
+                                if (status === google.maps.GeocoderStatus.OK) {
+                                    const userLocation = results[0].geometry.location;
+                                    if (mapInstanceRef.current) {
+                                        mapInstanceRef.current.setCenter(userLocation);
+                                        mapInstanceRef.current.setZoom(14);
+
+                                        // Remove old marker
+                                        if (markerRef.current) {
+                                            markerRef.current.setMap(null);
+                                        }
+
+                                        // Create new marker
+                                        markerRef.current = new google.maps.Marker({
+                                            position: userLocation,
+                                            map: mapInstanceRef.current,
+                                            title: "You are here!",
+                                        });
+
+                                        // Set locationFound to true after location is successfully found
+                                        setLocationFound(true);
+                                    }
+                                } else {
+                                    alert("Geocode was not successful for the following reason: " + status);
+                                }
+                            });
+                        }
+                    }}
+                />
 
                 {locationFound && (
                     <button
@@ -191,6 +225,14 @@ const Map = () => {
                         style={{ marginTop: "10px", padding: "10px" }}
                     >
                         Find Hospitals
+                    </button>
+                )}
+                {locationFound && (
+                    <button
+                        onClick={findGasstations}
+                        style={{ marginTop: "10px", padding: "10px" }}
+                    >
+                        Find Gas Stations
                     </button>
                 )}
 
@@ -206,6 +248,27 @@ const Map = () => {
                                     <br />
                                     <button
                                         onClick={() => toggleDirections(index, hospital)}
+                                    >
+                                        {directionsVisible[index] ? "Hide Directions" : "Show Directions"}
+                                    </button>
+                                    <div id={`directionsPanel-${index}`} style={{ marginTop: "10px" }}></div>
+                                </li>
+                            ))}
+                        </div>
+                    </div>
+                )}
+                {data && data.gas_stations && (
+                    <div style={{ marginTop: "20px" }}>
+                        <h3>Nearby Gas Stations:</h3>
+                        <div>
+                            {data.gas_stations.slice(0, 5).map((gas_stations, index) => (
+                                <li key={index}>
+                                    <strong>{gas_stations.name}</strong><br />
+                                    {gas_stations.address}
+                                    {gas_stations.distance_miles && <><br />{gas_stations.distance_miles}</>}
+                                    <br />
+                                    <button
+                                        onClick={() => toggleDirections(index, gas_stations)}
                                     >
                                         {directionsVisible[index] ? "Hide Directions" : "Show Directions"}
                                     </button>
