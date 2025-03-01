@@ -114,6 +114,27 @@ const Map = () => {
         }
     };
 
+    const findGas = async () => {
+        if (markerRef.current) {
+            const userLocation = markerRef.current.getPosition();
+            if (userLocation) {
+                const lat = userLocation.lat();
+                const lng = userLocation.lng();
+
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/gas_stations/?lat=${lat}&lng=${lng}&radius=10000`
+                    );
+                    const data = await response.json();
+                    setData({ hospitals: data.hospitals });
+                    console.log("Gas Stations:", data.hospitals);
+                } catch (error) {
+                    console.error("Error fetching Gas Stations:", error);
+                }
+            }
+        }
+    };
+
     const toggleDirections = (index, hospital) => {
         setDirectionsVisible((prev) => {
             const newState = { ...prev, [index]: !prev[index] };
