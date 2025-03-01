@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 from fastapi import Query
@@ -88,36 +88,36 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
 
 
 @app.get("/gas-stations/")
-async def get_gas_stations(lat: float, lng: float, radius: int = 10000):
+async def get_gas_stations(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "gas_station")
     return {"gas_stations": places}
 
 
 @app.get("/grocery-stores/")
-async def get_grocery_stores(lat: float, lng: float, radius: int = 10000):
+async def get_grocery_stores(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "grocery_or_supermarket")
     return {"grocery_stores": places}
 
 
 @app.get("/fire-stations/")
-async def get_fire_stations(lat: float, lng: float, radius: int = 10000):
+async def get_fire_stations(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "fire_station")
     return {"fire_stations": places}
 
 
 @app.get("/public-shelters/")
-async def get_public_shelters(lat: float, lng: float, radius: int = 10000):
+async def get_public_shelters(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "shelter")
     return {"public_shelters": places}
 
 @app.get("/hospitals/")
-async def get_hospitals(lat: float, lng: float, radius: int = 10000):
+async def get_hospitals(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "hospital")
     return {"hospitals": places}
 
 
 @app.get("/public-transportation/")
-async def get_public_transportation(lat: float, lng: float, radius: int = 10000):
+async def get_public_transportation(lat: float, lng: float, radius: int = 80500):
     places = []
 
     # Search for bus stations
@@ -132,7 +132,7 @@ async def get_public_transportation(lat: float, lng: float, radius: int = 10000)
 
 # New endpoint to find a custom place by type
 @app.get("/custom-place/")
-async def get_custom_place(lat: float, lng: float, radius: int = 10000, place_type: str = Query(...)):
+async def get_custom_place(lat: float, lng: float, radius: int = 80500, place_type: str = Query(...)):
 
     places = get_places(lat, lng, radius, place_type)
     return {f"{place_type}s": places}
