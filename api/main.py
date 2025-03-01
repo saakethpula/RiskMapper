@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-load_dotenv
 app = FastAPI()
 
 # Enable CORS for your frontend
@@ -19,7 +18,6 @@ app.add_middleware(
 )
 
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
-
 
 @app.get("/hospitals/")
 async def get_hospitals(lat: float, lng: float, radius: int = 1000000):
