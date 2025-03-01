@@ -143,37 +143,37 @@ const Map = () => {
         });
     };
 
-    return (
-        <div style={{ display: "flex", justifyContent: "center", textAlign: "center" }}>
-            <div ref={mapRef} style={{ height: "500px", width: "50%" }}></div>
-            <div style={{ marginLeft: "20px", width: "30%" }}>
-                <button onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
-                    Find My Location
-                </button>
-                {data && data.hospitals && (
-                    <div style={{ marginTop: "20px" }}>
-                        <h3>Nearby Hospitals:</h3>
-                        <div>
-                            {data.hospitals.slice(0, 2).map((hospital, index) => (
-                                <li key={index}>
-                                    <strong>{hospital.name}</strong><br />
-                                    {hospital.address}
-                                    {hospital.distance_miles && <><br />{hospital.distance_miles}</>}
-                                    <br />
-                                    <button
-                                        onClick={() => toggleDirections(index, hospital)}
-                                    >
-                                        {directionsVisible[index] ? "Hide Directions" : "Show Directions"}
-                                    </button>
-                                    <div id={`directionsPanel-${index}`} style={{ marginTop: "10px" }}></div>
-                                </li>
-                            ))}
-                        </div>
+return (
+    <div style={{ display: "flex", justifyContent: "left", textAlign: "center", padding: "20px" }}>
+        <div ref={mapRef} style={{ height: "700px", width: "70%" }}></div>
+        <div style={{ marginLeft: "20px", width: "30%" }}>
+            <button onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
+                Find My Location
+            </button>
+            {data && data.hospitals && (
+                <div style={{ marginTop: "20px" }}>
+                    <h3>Nearby Hospitals:</h3>
+                    <div>
+                        {data.hospitals.slice(0, 2).map((hospital, index) => (
+                            <li key={index}>
+                                <strong>{hospital.name}</strong><br />
+                                {hospital.address}
+                                {hospital.distance_miles && <><br />{hospital.distance_miles}</>}
+                                <br />
+                                <button
+                                    onClick={() => toggleDirections(index, hospital)}
+                                >
+                                    {directionsVisible[index] ? "Hide Directions" : "Show Directions"}
+                                </button>
+                                <div id={`directionsPanel-${index}`} style={{ marginTop: "10px" }}></div>
+                            </li>
+                        ))}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
-    );
+    </div>
+);
 };
 
 export default Map;
