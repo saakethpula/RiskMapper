@@ -124,6 +124,11 @@ async def get_public_shelters(lat: float, lng: float, radius: int = 10000):
     places = get_places(lat, lng, radius, "shelter")
     return {"public_shelters": places}
 
+@app.get("/hospitals/")
+async def get_hospitals(lat: float, lng: float, radius: int = 10000):
+    places = get_places(lat, lng, radius, "hospital")
+    return {"hospitals": places}
+
 
 @app.get("/public-transportation/")
 async def get_public_transportation(lat: float, lng: float, radius: int = 10000):
@@ -147,3 +152,21 @@ async def get_custom_place(
 ):
     places = get_places(lat, lng, radius, place_type)
     return {f"{place_type}s": places}
+
+
+class addressRequest(BaseModel):
+    prompt: str 
+
+def validate_addresses(request:addressRequest):
+    url = f"https://addressvalidation.googleapis.com/v1:validateAddress?key={GOOGLE_MAPS_API_KEY}"
+    
+    payload = {"address": {"addressLines": [request.address]}
+    }
+    headers = {"Content-Type": "application/json"}
+
+    response = requests.post(url, json=payload, headers=headers)
+    
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail="Error from Google API")
+
+    return response.json()
