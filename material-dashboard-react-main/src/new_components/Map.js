@@ -33,11 +33,12 @@ const loadGoogleMapsScript = () => {
 
 const Map = () => {
     const [mapLoaded, setMapLoaded] = useState(false);
+    const [locationFound, setLocationFound] = useState(false); // To track if the location is found
+    const [data, setData] = useState(null);
+    const [directionsVisible, setDirectionsVisible] = useState({});
     const mapRef = useRef(null);
     const mapInstanceRef = useRef(null);
     const markerRef = useRef(null);
-    const [data, setData] = useState(null);
-    const [directionsVisible, setDirectionsVisible] = useState({});
 
     useEffect(() => {
         loadGoogleMapsScript()
@@ -79,17 +80,8 @@ const Map = () => {
                             title: "You are here!",
                         });
 
-                        // Fetch hospitals from FastAPI backend
-                        try {
-                            const response = await fetch(
-                                `http://127.0.0.1:8000/hospitals/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
-                            );
-                            const data = await response.json();
-                            setData({ hospitals: data.hospitals });
-                            console.log("Hospitals:", data.hospitals);
-                        } catch (error) {
-                            console.error("Error fetching hospitals:", error);
-                        }
+                        // Set locationFound to true after location is successfully found
+                        setLocationFound(true);
                     }
                 },
                 () => {
@@ -98,6 +90,27 @@ const Map = () => {
             );
         } else {
             alert("Geolocation is not supported by your browser.");
+        }
+    };
+
+    const findHospitals = async () => {
+        if (markerRef.current) {
+            const userLocation = markerRef.current.getPosition();
+            if (userLocation) {
+                const lat = userLocation.lat();
+                const lng = userLocation.lng();
+
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/hospitals/?lat=${lat}&lng=${lng}&radius=10000`
+                    );
+                    const data = await response.json();
+                    setData({ hospitals: data.hospitals });
+                    console.log("Hospitals:", data.hospitals);
+                } catch (error) {
+                    console.error("Error fetching hospitals:", error);
+                }
+            }
         }
     };
 
@@ -150,11 +163,21 @@ const Map = () => {
                 <button onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
                     Find My Location
                 </button>
+
+                {locationFound && (
+                    <button
+                        onClick={findHospitals}
+                        style={{ marginTop: "10px", padding: "10px" }}
+                    >
+                        Find Hospitals
+                    </button>
+                )}
+
                 {data && data.hospitals && (
                     <div style={{ marginTop: "20px" }}>
                         <h3>Nearby Hospitals:</h3>
                         <div>
-                            {data.hospitals.slice(0, 2).map((hospital, index) => (
+                            {data.hospitals.slice(0, 5).map((hospital, index) => (
                                 <li key={index}>
                                     <strong>{hospital.name}</strong><br />
                                     {hospital.address}
