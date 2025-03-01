@@ -131,3 +131,21 @@ async def get_custom_place(lat: float, lng: float, radius: int = 10000, place_ty
 
     places = get_places(lat, lng, radius, place_type)
     return {f"{place_type}s": places}
+
+
+class addressRequest(BaseModel):
+    prompt: str 
+
+def validate_addresses(request:addressRequest):
+    url = f"https://addressvalidation.googleapis.com/v1:validateAddress?key={GOOGLE_MAPS_API_KEY}"
+    
+    payload = {"address": {"addressLines": [request.address]}
+    }
+    headers = {"Content-Type": "application/json"}
+
+    response = requests.post(url, json=payload, headers=headers)
+    
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail="Error from Google API")
+
+    return response.json()
