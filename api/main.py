@@ -5,7 +5,9 @@ from fastapi import Query
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
-import genai
+
+import google.generativeai as genai
+
 import json
 
 load_dotenv()
@@ -23,26 +25,30 @@ app.add_middleware(
 
 
 class QueryRequest(BaseModel):
-    prompt: str 
+    prompt: str
 
 
 def get_ai_response(request: QueryRequest):
-    try: 
+    try:
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(request.prompt)
         return {"response": response.text}
     except Exception as e:
         return {"error": str(e)}
+
+
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
+
 def store_results_to_json(place_type: str, results: list):
-    with open(f'{place_type}_nearby.json', 'w') as f:
+    with open(f"{place_type}_nearby.json", "w") as f:
         json.dump(results, f, indent=4)
+
 
 def get_places(lat: float, lng: float, radius: int, place_type: str):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     params = {
-         "location": f"{lat},{lng}",
+        "location": f"{lat},{lng}",
         "radius": radius,
         "type": place_type,
         "key": GOOGLE_MAPS_API_KEY,
@@ -56,17 +62,21 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
         place_id = place.get("place_id")
         place_lat = place["geometry"]["location"]["lat"]
         place_lng = place["geometry"]["location"]["lng"]
-        
+
         distance_url = "https://maps.googleapis.com/maps/api/distancematrix/json"
         distance_params = {
             "origins": f"{lat},{lng}",
             "destinations": f"{place_lat},{place_lng}",
-            "units": "imperial",  
+            "units": "imperial",
             "key": GOOGLE_MAPS_API_KEY,
         }
         distance_response = requests.get(distance_url, params=distance_params).json()
-        distance_text = distance_response["rows"][0]["elements"][0].get("distance", {}).get("text", "N/A")
-        
+        distance_text = (
+            distance_response["rows"][0]["elements"][0]
+            .get("distance", {})
+            .get("text", "N/A")
+        )
+
         details_url = "https://maps.googleapis.com/maps/api/place/details/json"
         details_params = {
             "place_id": place_id,
@@ -74,16 +84,20 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
             "key": GOOGLE_MAPS_API_KEY,
         }
         details_response = requests.get(details_url, params=details_params).json()
-        contact_info = details_response.get("result", {}).get("formatted_phone_number", "N/A")
+        contact_info = details_response.get("result", {}).get(
+            "formatted_phone_number", "N/A"
+        )
 
-        places.append({
-            "name": place.get("name"),
-            "address": place.get("vicinity"),
-            "distance_miles": distance_text,
-            "contact": contact_info,
-        })
-    
-    store_results_to_json(place_type, places) 
+        places.append(
+            {
+                "name": place.get("name"),
+                "address": place.get("vicinity"),
+                "distance_miles": distance_text,
+                "contact": contact_info,
+            }
+        )
+
+    store_results_to_json(place_type, places)
     return places
 
 
@@ -130,10 +144,10 @@ async def get_public_transportation(lat: float, lng: float, radius: int = 80500)
 
     return {"public_transportation": places}
 
+
 # New endpoint to find a custom place by type
 @app.get("/custom-place/")
 async def get_custom_place(lat: float, lng: float, radius: int = 80500, place_type: str = Query(...)):
-
     places = get_places(lat, lng, radius, place_type)
     return {f"{place_type}s": places}
 
