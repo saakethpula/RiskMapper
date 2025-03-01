@@ -1,17 +1,10 @@
 from fastapi import FastAPI
-<<<<<<< HEAD
-import google.generativeai as genai
-import os 
-from dotenv import load_dotenv
-from pydantic import BaseModel
-=======
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
->>>>>>> origin/main
 
 load_dotenv
 app = FastAPI()
@@ -25,23 +18,6 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-<<<<<<< HEAD
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-class QueryRequest(BaseModel):
-    prompt: str 
-
-
-def get_ai_response(request: QueryRequest):
-    try: 
-        model = genai.GenerativeModel("gemini-pro")
-        response = model.generate_content(request.prompt)
-        return {"response": response.text}
-    except Exception as e:
-        return {"error": str(e)}
-=======
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
 
@@ -107,4 +83,3 @@ async def get_hospitals(lat: float, lng: float, radius: int = 1000000):
         )
 
     return {"hospitals": hospitals}
->>>>>>> origin/main
