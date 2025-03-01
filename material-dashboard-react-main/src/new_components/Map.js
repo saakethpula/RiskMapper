@@ -280,7 +280,6 @@ const Map = () => {
                 )}
             </div>
         </div>
-    </div>
 );
 };
 
