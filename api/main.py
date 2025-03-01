@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import requests
+from fastapi import Query
+from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
+import genai
+import json
 
 load_dotenv()
 
@@ -17,49 +21,52 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+
+class QueryRequest(BaseModel):
+    prompt: str 
+
+
+def get_ai_response(request: QueryRequest):
+    try: 
+        model = genai.GenerativeModel("gemini-pro")
+        response = model.generate_content(request.prompt)
+        return {"response": response.text}
+    except Exception as e:
+        return {"error": str(e)}
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
-@app.get("/hospitals/")
-async def get_hospitals(lat: float, lng: float, radius: int = 1000000):
+def store_results_to_json(place_type: str, results: list):
+    with open(f'{place_type}_nearby.json', 'w') as f:
+        json.dump(results, f, indent=4)
+
+def get_places(lat: float, lng: float, radius: int, place_type: str):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     params = {
-        "location": f"{lat},{lng}",
+         "location": f"{lat},{lng}",
         "radius": radius,
-        "type": "hospital",
+        "type": place_type,
         "key": GOOGLE_MAPS_API_KEY,
     }
-
-    # Log the API request and parameters
-    print(f"Requesting nearby hospitals at lat: {lat}, lng: {lng}, radius: {radius}")
 
     response = requests.get(url, params=params)
     data = response.json()
 
-    # Log the response data
-    print(f"Google Maps API Response: {data}")
-
-    hospitals = []
+    places = []
     for place in data.get("results", []):
         place_id = place.get("place_id")
-        hospital_lat = place["geometry"]["location"]["lat"]
-        hospital_lng = place["geometry"]["location"]["lng"]
-
-        # Get Distance from user to hospital
+        place_lat = place["geometry"]["location"]["lat"]
+        place_lng = place["geometry"]["location"]["lng"]
+        
         distance_url = "https://maps.googleapis.com/maps/api/distancematrix/json"
         distance_params = {
             "origins": f"{lat},{lng}",
-            "destinations": f"{hospital_lat},{hospital_lng}",
-            "units": "imperial",
+            "destinations": f"{place_lat},{place_lng}",
+            "units": "imperial",  
             "key": GOOGLE_MAPS_API_KEY,
         }
         distance_response = requests.get(distance_url, params=distance_params).json()
-        distance_text = (
-            distance_response["rows"][0]["elements"][0]
-            .get("distance", {})
-            .get("text", "N/A")
-        )
-
-        # Get Hospital Contact Info
+        distance_text = distance_response["rows"][0]["elements"][0].get("distance", {}).get("text", "N/A")
+        
         details_url = "https://maps.googleapis.com/maps/api/place/details/json"
         details_params = {
             "place_id": place_id,
@@ -67,17 +74,60 @@ async def get_hospitals(lat: float, lng: float, radius: int = 1000000):
             "key": GOOGLE_MAPS_API_KEY,
         }
         details_response = requests.get(details_url, params=details_params).json()
-        contact_info = details_response.get("result", {}).get(
-            "formatted_phone_number", "N/A"
-        )
+        contact_info = details_response.get("result", {}).get("formatted_phone_number", "N/A")
 
-        hospitals.append(
-            {
-                "name": place.get("name"),
-                "address": place.get("vicinity"),
-                "distance_miles": distance_text,
-                "contact": contact_info,
-            }
-        )
+        places.append({
+            "name": place.get("name"),
+            "address": place.get("vicinity"),
+            "distance_miles": distance_text,
+            "contact": contact_info,
+        })
+    
+    store_results_to_json(place_type, places) 
+    return places
 
-    return {"hospitals": hospitals}
+
+@app.get("/gas-stations/")
+async def get_gas_stations(lat: float, lng: float, radius: int = 10000):
+    places = get_places(lat, lng, radius, "gas_station")
+    return {"gas_stations": places}
+
+
+@app.get("/grocery-stores/")
+async def get_grocery_stores(lat: float, lng: float, radius: int = 10000):
+    places = get_places(lat, lng, radius, "grocery_or_supermarket")
+    return {"grocery_stores": places}
+
+
+@app.get("/fire-stations/")
+async def get_fire_stations(lat: float, lng: float, radius: int = 10000):
+    places = get_places(lat, lng, radius, "fire_station")
+    return {"fire_stations": places}
+
+
+@app.get("/public-shelters/")
+async def get_public_shelters(lat: float, lng: float, radius: int = 10000):
+    places = get_places(lat, lng, radius, "shelter")
+    return {"public_shelters": places}
+
+
+@app.get("/public-transportation/")
+async def get_public_transportation(lat: float, lng: float, radius: int = 10000):
+    places = []
+
+    # Search for bus stations
+    bus_station_places = get_places(lat, lng, radius, "bus_station")
+    places.extend(bus_station_places)
+
+    # Search for train stations
+    train_station_places = get_places(lat, lng, radius, "train_station")
+    places.extend(train_station_places)
+
+    return {"public_transportation": places}
+
+# New endpoint to find a custom place by type
+@app.get("/custom-place/")
+async def get_custom_place(lat: float, lng: float, radius: int = 10000, place_type: str = Query(...)):
+
+    places = get_places(lat, lng, radius, place_type)
+    return {f"{place_type}s": places}
