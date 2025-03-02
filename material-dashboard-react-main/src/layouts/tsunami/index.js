@@ -96,11 +96,6 @@ function Tsunami() {
                   icon="place"
                   title="Number of Nearby High Areas"
                   count={hospitalNearby}
-                  percentage={{
-                    color: "success",
-                    amount: "+55%",
-                    label: "than last week",
-                  }}
                   titleTypographyProps={{ variant: "body2" }}
                   countTypographyProps={{ variant: "h6" }}
                 />
@@ -112,11 +107,6 @@ function Tsunami() {
                   icon="leaderboard"
                   title="Distance to Nearest High Ground (mi)"
                   count={nearestHospitalDistance}
-                  percentage={{
-                    color: "success",
-                    amount: "+3%",
-                    label: "than last month",
-                  }}
                   titleTypographyProps={{ variant: "body2" }}
                   countTypographyProps={{ variant: "h6" }}
                 />
@@ -129,11 +119,6 @@ function Tsunami() {
                   icon="star"
                   title="Nearest High Ground Rating"
                   count={traveltime}
-                  percentage={{
-                    color: "success",
-                    amount: "+1%",
-                    label: "than yesterday",
-                  }}
                   titleTypographyProps={{ variant: "body2" }}
                   countTypographyProps={{ variant: "h6" }}
                 />
@@ -146,11 +131,6 @@ function Tsunami() {
                   icon="person_add"
                   title="Risk Level"
                   count={riskAssessment}
-                  percentage={{
-                    color: "success",
-                    amount: "",
-                    label: "Just updated",
-                  }}
                   titleTypographyProps={{ variant: "body2" }}
                   countTypographyProps={{ variant: "h6" }}
                 />
