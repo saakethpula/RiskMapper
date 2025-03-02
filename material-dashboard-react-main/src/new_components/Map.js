@@ -99,55 +99,25 @@ const Map = ({ mapType }) => {
                             title: "You are here!",
                         });
 
-                        // Set locationFound to true after location is successfully found
-                        setLocationFound(true);
+                        // Fetch hospitals from FastAPI backend
+                        try {
+                            const response = await fetch(
+                                `http://127.0.0.1:8000/hospitals/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                            );
+                            const data = await response.json();
+                            setData({ hospitals: data.hospitals });
+                            console.log("Hospitals:", data.hospitals);
+                        } catch (error) {
+                            console.error("Error fetching hospitals:", error);
+                        }
                     }
+                },
+                () => {
+                    alert("Error: Could not get location. Please enter your location manually.");
                 }
             );
         } else {
             alert("Geolocation is not supported by your browser.");
-        }
-    };
-
-    const findHospitals = async () => {
-        if (markerRef.current) {
-            const userLocation = markerRef.current.getPosition();
-            if (userLocation) {
-                const lat = userLocation.lat();
-                const lng = userLocation.lng();
-
-                try {
-                    const response = await fetch(
-                        `http://127.0.0.1:8000/hospitals/?lat=${lat}&lng=${lng}&radius=10000`
-                    );
-                    const data = await response.json();
-                    setData({ hospitals: data.hospitals });
-                    console.log("Hospitals:", data.hospitals);
-                } catch (error) {
-                    console.error("Error fetching hospitals:", error);
-                }
-            }
-        }
-    };
-
-    const findGasstations = async () => {
-        if (markerRef.current) {
-            const userLocation = markerRef.current.getPosition();
-            if (userLocation) {
-                const lat = userLocation.lat();
-                const lng = userLocation.lng();
-
-                try {
-                    const response = await fetch(
-                        `http://127.0.0.1:8000/gas-stations/?lat=${lat}&lng=${lng}&radius=10000`
-                    );
-                    const data = await response.json();
-                    setData({ gas_stations: data.gas_stations });
-                    console.log("Gas Stations:", data.gas_stations);
-                } catch (error) {
-                    console.error("Error fetching gas stations:", error);
-                }
-            }
         }
     };
 
