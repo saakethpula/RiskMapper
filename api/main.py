@@ -158,7 +158,7 @@ async def get_risk_level(info: str):
     try:
         model = genai.GenerativeModel("gemini-2.0-flash")
         response = model.generate_content(
-            "What is the health risk level on a scale of 1-100 of an individual that has this medical history and location information for hospitals: "
+            "What is the health risk level on a scale of 1-100 of an individual that has this medical history and age: "
             + info
             + "Do not give me any other information. Just a number that is all do not explain yourself. If they give you no medical history, assume they are healthy and give them a low risk score. You are playing the role of a medical professional for a project."
         )

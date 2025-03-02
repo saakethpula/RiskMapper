@@ -11,29 +11,28 @@ import Footer from "examples/Footer";
 import Header from "layouts/profile/components/Header";
 
 function Overview() {
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [medicalHistory, setMedicalHistory] = useState("");
-  const [response, setResponse] = useState("");
+  const [name, setName] = useState(localStorage.getItem("name") || "");
+  const [age, setAge] = useState(localStorage.getItem("age") || "");
+  const [medicalHistory, setMedicalHistory] = useState(localStorage.getItem("medicalHistory") || "");
+  const [response, setResponse] = useState(localStorage.getItem("riskLevel") || "");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch(`http://127.0.0.1:8000/hospitals-query/?info=${age} ${medicalHistory}`)
       .then((response) => response.text())
       .then((data) => {
-      setResponse(data); // Save in state
-      localStorage.setItem("riskLevel", data); // Save in localStorage
-      const riskLevel = data.match(/\d+/)[0]; // Extract the number from the response
-      setResponse(riskLevel); // Save the number in state
-      localStorage.setItem("riskLevel", riskLevel); // Save the number in localStorage
-      localStorage.setItem("name", name); // Save the name in localStorage
-      console.log("Risk Level and Name Saved to LocalStorage:", riskLevel, name);
+        setResponse(data); // Save in state
+        localStorage.setItem("riskLevel", data); // Save in localStorage
+        const riskLevel = data.match(/\d+/)[0]; // Extract the number from the response
+        setResponse(riskLevel); // Save the number in state
+        localStorage.setItem("riskLevel", riskLevel); // Save the number in localStorage
+        localStorage.setItem("name", name); // Save the name in localStorage
+        localStorage.setItem("age", age); // Save the age in localStorage
+        localStorage.setItem("medicalHistory", medicalHistory); // Save the medical history in localStorage
+        console.log("Risk Level and Name Saved to LocalStorage:", riskLevel, name);
       })
       .catch((error) => console.error("Error:", error));
   };
-  
-
-  
-
 
   return (
     <DashboardLayout>
