@@ -49,7 +49,6 @@ def store_results_to_json(place_type: str, results: list):
         json.dump(results, f, indent=4)
 
 
-
 def get_places(lat: float, lng: float, radius: int, place_type: str):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     params = {
@@ -104,8 +103,6 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
         )
     store_results_to_json(place_type, places)
     return places
-
-
 
 
 @app.get("/gas-stations/")
@@ -236,47 +233,48 @@ async def get_risk_assessment(lat: float, lng: float):
 
 
 @app.get("/disaster-response")
-async def generate_disaster_response(disaster_type: str, lat: float, lng: float):
-    # Normalize input (convert to lowercase and remove leading/trailing spaces)
+def generate_disaster_response(disaster_type: str, lat: float, lng: float):
     disaster_type = disaster_type.strip().lower()
 
-    # Validate disaster type
-    valid_disasters = ["medical emergency", "wildfire", "hurricane", "earthquake", "tsunami", "nuclear event"]
+    valid_disasters = [
+        "medical emergency",
+        "wildfire",
+        "hurricane",
+        "earthquake",
+        "tsunami",
+        "nuclear event",
+    ]
+
     if disaster_type not in valid_disasters:
         raise HTTPException(
             status_code=400,
-            detail="Invalid disaster type. Use one of: medical emergency, wildfire, hurricane, earthquake, tsunami, nuclear event"
+            detail="Invalid disaster type. Use one of: medical emergency, wildfire, hurricane, earthquake, tsunami, nuclear event",
         )
 
     try:
-        # Dynamic prompt structure
         prompt = (
-            f"Provide a concise evacuation plan for a {disaster_type} at ({lat}, {lng}) and a list of essential survival items."
-            "The response should be formatted as follows:\n"
-            "Evacuation Plan: [plan]\n\n Essentials: [items]\n\n Where To Go: [location]"
-            "Return only the plan and items with no additional text or formatting."
+            f"Provide a concise evacuation plan for a {disaster_type} at ({lat}, {lng}) "
+            "and a list of essential survival items. The response should be structured as follows:\n"
+            "Evacuation Plan: [plan]\n\n Essentials: [items]\n\n Where To Go: [location]\n"
+            "Return only the structured information without any introductory or concluding remarks."
         )
 
-        # Call Gemini AI
         model = genai.GenerativeModel("gemini-2.0-flash")
-        response = model.generate_content(prompt)
+        response = model.generate_content(prompt)  # Removed 'await' here
 
-        # Extract and clean response text
-        ai_response_text = (
-            response.text.strip()
-            if response and response.text
-            else "Error generating response."
-        )
+        if not response or not response.text:
+            raise HTTPException(status_code=500, detail="AI response is empty.")
 
-        # Consistent formatting of the response text
-        ai_response_text = ai_response_text.replace("*", " ").replace("#", " ").strip()
+        ai_response_text = response.text.strip()
 
-        # ai_response_text = re.sub(r'\s+', ' ', ai_response_text)
+        # Cleanup any unnecessary markdown, bullet points, or special characters
+        ai_response_text = re.sub(r"[*#]", " ", ai_response_text).strip()
 
         return {
             "disaster_type": disaster_type,
             "response": ai_response_text,
         }
+
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error generating response: {str(e)}"
@@ -287,7 +285,6 @@ async def generate_disaster_response(disaster_type: str, lat: float, lng: float)
 async def generate_random_disaster():
     # List of possible disaster types
     disaster_types = ["wildfire", "hurricane", "earthquake", "tsunami", "nuclear event"]
-
 
     # Generate a random disaster type
     disaster_type = random.choice(disaster_types)
