@@ -1,119 +1,118 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
+import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-
-// Data
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-import hospitalNearbyData from "layouts/dashboard/data/hospital_nearby.json";
-
-// Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
-function Hurricane() {
-  const { sales, tasks } = reportsLineChartData;
-  const nearestHospitalDistance = hospitalNearbyData[0].distance_miles;
-  const hospitalNearby = hospitalNearbyData.length;
-  const traveltime = hospitalNearbyData[0].distance_miles.replace(" mi", "");
+import PropTypes from "prop-types";
+import Map from "../../new_components/Map";
 
-  return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Number of Nearby Hospitals"
-                count={hospitalNearby}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than last week",
-                }}
-              />
+function Wildfire() {
+    const [hospitalNearbyData, setHospitalNearbyData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const [lat, setLat] = useState(null);
+    const [lng, setLng] = useState(null);
+    const [data, setData] = useState([]);  // Initialize as an empty array
+    const risk = localStorage.getItem("riskLevel") || "Not available";
+
+    useEffect(() => {
+        if (lat && lng) {
+            const fetchHospitals = async () => {
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/fire-stations/?lat=${lat}&lng=${lng}&radius=10000`
+                    );
+                    const result = await response.json();
+                    setData(result.fire_stations || []);  // Ensure the data is an array
+                    console.log("Data:", result.fire_stations);
+                } catch (error) {
+                    console.error("Error fetching hospitals:", error);
+                }
+            };
+
+            fetchHospitals();
+        } else {
+            // If lat and lng are not available, set loading to false
+            setLoading(false);
+        }
+    }, [lat, lng]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    // Ensure safe access
+    const nearestHospitalDistance = data.length > 0 ? data[0]?.distance_miles : "N/A";
+    const hospitalNearby = data.length;  // Length of hospitals array
+    const traveltime = data.length > 0 ? data[0]?.distance_miles.replace(" mi", "") : "N/A";  // Access first hospital
+
+    return (
+        <DashboardLayout>
+            <DashboardNavbar />
+            <MDBox py={3}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={6} lg={3}>
+                        <MDBox mb={1.5}>
+                            <ComplexStatisticsCard
+                                color="dark"
+                                icon="place"
+                                title="Number of Nearby Hospitals"
+                                count={hospitalNearby}
+                            />
+                        </MDBox>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={3}>
+                        <MDBox mb={1.5}>
+                            <ComplexStatisticsCard
+                                icon="leaderboard"
+                                title="Distance to Nearest Hospital (mi)"
+                                count={nearestHospitalDistance}
+                            />
+                        </MDBox>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={3}>
+                        <MDBox mb={1.5}>
+                            <ComplexStatisticsCard
+                                color="success"
+                                icon="star"
+                                title="Nearest Hospital Rating"
+                                count={traveltime}
+                            />
+                        </MDBox>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={3}>
+                        <MDBox mb={1.5}>
+                            <ComplexStatisticsCard
+                                color="primary"
+                                icon="person_add"
+                                title="Risk Level"
+                                count={risk}
+                            />
+                        </MDBox>
+                    </Grid>
+                </Grid>
+                <MDBox>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={10} lg={12}>
+                            <Projects mapState={"fire_stations"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
+
+                        </Grid>
+
+                    </Grid>
+
+                </MDBox>
+
             </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Distance to Nearest Hospital (mi)"
-                count={nearestHospitalDistance}
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Travel Time"
-                count={traveltime}
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Risk Level"
-                count={hospitalNearby}
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
-              />
-            </MDBox>
-          </Grid>
-        </Grid>
-        <MDBox>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={10} lg={12}>
-              <Projects mapState={"hospital"} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-            </Grid>
-          </Grid>
-        </MDBox>
-      </MDBox>
-    </DashboardLayout>
-  );
+        </DashboardLayout>
+    );
 }
 
-export default Hurricane;
+Wildfire.propTypes = {
+    lat: PropTypes.number,  // No .isRequired, making it optional
+    lng: PropTypes.number,  // No .isRequired, making it optional
+};
+
+export default Wildfire;
