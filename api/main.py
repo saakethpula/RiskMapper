@@ -197,7 +197,7 @@ async def get_risk_assessment(lat: float, lng: float):
         prompt_text = (
             f"Assess the likelihood of natural disasters for the coordinates ({lat}, {lng}) on a scale from 0 to 100. "
             "The response should be formatted as follows:\n"
-            "'Hurricane Risk: [value], Earthquake Risk: [value], Wildfire Risk: [value], Flood Risk: [value], Tornado Risk: [value], Tsunami Risk: [value]'.\n"
+            " Wildfire Risk: [value], Hurricane Risk: [value], Earthquake Risk: [value], Tsunami Risk: [value], Nuclear Event: [value]'.\n"
             "Return only the values with no additional text or formatting."
 )
 
@@ -221,11 +221,11 @@ async def generate_disaster_response(disaster_type: str, lat: float, lng: float)
     disaster_type = disaster_type.strip().lower()
 
     # Validate disaster type
-    valid_disasters = ["earthquake", "hurricane", "wildfire", "flood", "tornado", "tsunami"]
+    valid_disasters = ["medical emergency", "wildfire", "hurricane", "earthquake", "tsunami", "nuclear event"]
     if disaster_type not in valid_disasters:
         raise HTTPException(
             status_code=400, 
-            detail="Invalid disaster type. Use one of: earthquake, hurricane, wildfire, flood, tornado, tsunami."
+            detail="Invalid disaster type. Use one of: medical emergency, wildfire, hurricane, earthquake, tsunami, nuclear event"
         )
 
     try:
@@ -261,7 +261,7 @@ async def generate_disaster_response(disaster_type: str, lat: float, lng: float)
 @app.get("/random-disaster/")
 async def generate_random_disaster():
     # List of possible disaster types
-    disaster_types = ["earthquake", "hurricane", "tornado", "wildfire", "flood", "tsunami"]
+    disaster_types = ["wildfire", "hurricane", "earthquake", "tsunami", "nuclear event"]
 
     # Generate a random disaster type
     disaster_type = random.choice(disaster_types)
