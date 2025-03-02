@@ -17,6 +17,8 @@ function Nuclear() {
     const [lng, setLng] = useState(null);
     const [data, setData] = useState([]);  
     const [disasterResponse, setDisasterResponse] = useState(null); // Store API response
+    const [riskAssessment, setRiskAssessment] = useState("N/A"); // Store API response
+
     useEffect(() => {
         if (lat && lng) {
             const fetchHospitals = async () => {
@@ -55,14 +57,31 @@ function Nuclear() {
             fetchDisasterResponse();
         }
     }, [lat, lng]); // Now it waits until lat & lng are available
+    useEffect(() => {
+      if (lat !== null && lng !== null) {
+          const fetchRiskAssessment = async () => {
+              try {
+                  const response = await fetch(
+                      `http://127.0.0.1:8000/risk-assessment?lat=${lat}&lng=${lng}`
+                  );
+                  const result = await response.json();
+                  console.log("Risk Assessment:", result["risk_assessment"]["Nuclear Event"]);
+                  setRiskAssessment(result["risk_assessment"]["Nuclear Event"]);
+              } catch (error) {
+                  console.error("Error fetching risk assessment:", error);
+              }
+          };
 
+          fetchRiskAssessment();
+      }
+  }, [lat, lng]);
     if (loading) {
         return <div>Loading...</div>;
     }
 
     const nearestHospitalDistance = data.length > 0 ? (data[0]?.distance_miles || "N/A") : "N/A";
     const hospitalNearby = data.length;
-    const travelTime = data.length > 0 ? (data[0]?.distance_miles?.replace(" mi", "") || "N/A") : "N/A";
+    const traveltime = data.length > 0 ? (data[0].rating || "N/A") : "N/A"; 
 
     return (
         <DashboardLayout>
@@ -104,7 +123,7 @@ function Nuclear() {
                                 color="success"
                                 icon="star"
                                 title="Nearest Hospital Rating"
-                                count={travelTime}
+                                count={traveltime}
                                 percentage={{
                                     color: "success",
                                     amount: "+1%",
@@ -119,7 +138,7 @@ function Nuclear() {
                                 color="primary"
                                 icon="person_add"
                                 title="Risk Level"
-                                count={hospitalNearby}
+                                count={riskAssessment}
                                 percentage={{
                                     color: "success",
                                     amount: "",
