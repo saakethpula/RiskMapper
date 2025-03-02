@@ -50,33 +50,61 @@ def store_results_to_json(place_type: str, results: list):
 
 
 
-def get_places(lat: float, lng: float, radius: int, type: str):
-    places_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-    places_params = {
+def get_places(lat: float, lng: float, radius: int, place_type: str):
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+    params = {
         "location": f"{lat},{lng}",
         "radius": radius,
-        "type": type,
+        "type": place_type,
         "key": GOOGLE_MAPS_API_KEY,
     }
 
-    places_response = requests.get(places_url, params=places_params).json()
-    places = places_response.get("results", [])
+    response = requests.get(url, params=params)
+    data = response.json()
 
-    for place in places:
-        place_id = place.get('place_id')
+    places = []
+    for place in data.get("results", []):
+        place_id = place.get("place_id")
+        place_lat = place["geometry"]["location"]["lat"]
+        place_lng = place["geometry"]["location"]["lng"]
+
+        distance_url = "https://maps.googleapis.com/maps/api/distancematrix/json"
+        distance_params = {
+            "origins": f"{lat},{lng}",
+            "destinations": f"{place_lat},{place_lng}",
+            "units": "imperial",
+            "key": GOOGLE_MAPS_API_KEY,
+        }
+        distance_response = requests.get(distance_url, params=distance_params).json()
+        distance_text = (
+            distance_response["rows"][0]["elements"][0]
+            .get("distance", {})
+            .get("text", "N/A")
+        )
         details_url = "https://maps.googleapis.com/maps/api/place/details/json"
         details_params = {
             "place_id": place_id,
             "fields": "name,formatted_address,formatted_phone_number,rating",
             "key": GOOGLE_MAPS_API_KEY,
         }
-
         details_response = requests.get(details_url, params=details_params).json()
-        rating = details_response.get("result", {}).get("rating", "N/A")  # Default to 'N/A' if no rating
-        
-        place["rating"] = rating
+        contact_info = details_response.get("result", {}).get(
+            "formatted_phone_number", "N/A"
+        )
+        rating = details_response.get("result", {}).get("rating", "N/A")
 
+        places.append(
+            {
+                "name": place.get("name"),
+                "address": place.get("vicinity"),
+                "distance_miles": distance_text,
+                "contact": contact_info,
+                "rating": rating,
+            }
+        )
+    store_results_to_json(place_type, places)
     return places
+
 
 
 
