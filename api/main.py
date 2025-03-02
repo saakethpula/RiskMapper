@@ -254,13 +254,13 @@ def generate_disaster_response(disaster_type: str, lat: float, lng: float):
         "hurricane",
         "earthquake",
         "tsunami",
-        "nuclear event",
+        "nuclear_event",
     ]
 
     if disaster_type not in valid_disasters:
         raise HTTPException(
             status_code=400,
-            detail="Invalid disaster type. Use one of: medical emergency, wildfire, hurricane, earthquake, tsunami, nuclear event",
+            detail="Invalid disaster type. Use one of: medical emergency, wildfire, hurricane, earthquake, tsunami, nuclear_event",
         )
 
     try:
@@ -296,7 +296,7 @@ def generate_disaster_response(disaster_type: str, lat: float, lng: float):
 @app.get("/random-disaster/")
 async def generate_random_disaster():
     # List of possible disaster types
-    disaster_types = ["wildfire", "hurricane", "earthquake", "tsunami", "nuclear event"]
+    disaster_types = ["wildfire", "hurricane", "earthquake", "tsunami", "nuclear_event"]
 
     # Generate a random disaster type
     disaster_type = random.choice(disaster_types)
