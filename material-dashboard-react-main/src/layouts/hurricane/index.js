@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
+
 import Card from "@mui/material/Card";
+
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import Projects from "layouts/dashboard/components/Projects";
+
 import PropTypes from "prop-types";
 import Map from "../../new_components/Map";
 
@@ -152,8 +155,8 @@ function Hurricane() {
 }
 
 Hurricane.propTypes = {
-    lat: PropTypes.number,  
-    lng: PropTypes.number,  
+    lat: PropTypes.number,  // No .isRequired, making it optional
+    lng: PropTypes.number,  // No .isRequired, making it optional
 };
 
 export default Hurricane;
