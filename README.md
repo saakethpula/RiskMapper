@@ -10,6 +10,6 @@ Ensure you have the following installed:
 
 Node.js and npm
 
-Python 3.x
+Python
 
 Run npm install
