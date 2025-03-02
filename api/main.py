@@ -239,7 +239,7 @@ async def generate_disaster_response(disaster_type: str, lat: float, lng: float)
     valid_disasters = ["medical emergency", "wildfire", "hurricane", "earthquake", "tsunami", "nuclear event"]
     if disaster_type not in valid_disasters:
         raise HTTPException(
-            status_code=400, 
+            status_code=400,
             detail="Invalid disaster type. Use one of: medical emergency, wildfire, hurricane, earthquake, tsunami, nuclear event"
         )
 
