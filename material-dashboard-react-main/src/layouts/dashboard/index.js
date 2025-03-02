@@ -44,8 +44,8 @@ function Dashboard() {
       <MDBox py={3}>
         <MDBox>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={8} lg={9}>
-              <Projects />
+            <Grid item xs={12} md={10} lg={12}>
+              <Projects mapState={"hospital"} />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
             </Grid>

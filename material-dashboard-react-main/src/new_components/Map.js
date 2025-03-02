@@ -1,4 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
+import MDButton from "components/MDButton";
+import Grid from "@mui/material/Grid";
+import Invoices from "../layouts/billing/components/Invoices";
+import PropTypes from "prop-types";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -31,13 +35,15 @@ const loadGoogleMapsScript = () => {
     });
 };
 
-const Map = () => {
+const Map = ({ mapType }) => {
     const [mapLoaded, setMapLoaded] = useState(false);
+    const [locationFound, setLocationFound] = useState(false);
+    const [data, setData] = useState(null);
+    const [directionsVisible, setDirectionsVisible] = useState({});
+    const [hospitalItems, setHospitalItems] = useState([]);
     const mapRef = useRef(null);
     const mapInstanceRef = useRef(null);
     const markerRef = useRef(null);
-    const [data, setData] = useState(null);
-    const [directionsVisible, setDirectionsVisible] = useState({});
 
     useEffect(() => {
         loadGoogleMapsScript()
@@ -53,6 +59,20 @@ const Map = () => {
             });
         }
     }, [mapLoaded]);
+
+    // Process hospital data into the format required by Invoices component
+    useEffect(() => {
+        if (data && data.hospitals) {
+            // Take only the first 5 hospitals
+            const formattedItems = data.hospitals.slice(0, 5).map((hospital, index) => ({
+                label1: hospital.name,
+                label2: hospital.address,
+                label3: hospital.distance_miles,
+                noGutter: index === 4 // Add noGutter for last item
+            }));
+            setHospitalItems(formattedItems);
+        }
+    }, [data]);
 
     const locateUser = () => {
         if (navigator.geolocation) {
@@ -144,36 +164,72 @@ const Map = () => {
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", textAlign: "center" }}>
-            <div ref={mapRef} style={{ height: "500px", width: "50%" }}></div>
+        <div style={{ display: "flex", justifyContent: "left", textAlign: "center", padding: "20px" }}>
+            <div ref={mapRef} style={{ height: "700px", width: "70%" }}></div>
             <div style={{ marginLeft: "20px", width: "30%" }}>
-                <button onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
-                    Find My Location
-                </button>
-                {data && data.hospitals && (
-                    <div style={{ marginTop: "20px" }}>
-                        <h3>Nearby Hospitals:</h3>
-                        <div>
-                            {data.hospitals.slice(0, 2).map((hospital, index) => (
-                                <li key={index}>
-                                    <strong>{hospital.name}</strong><br />
-                                    {hospital.address}
-                                    {hospital.distance_miles && <><br />{hospital.distance_miles}</>}
-                                    <br />
-                                    <button
-                                        onClick={() => toggleDirections(index, hospital)}
-                                    >
-                                        {directionsVisible[index] ? "Hide Directions" : "Show Directions"}
-                                    </button>
-                                    <div id={`directionsPanel-${index}`} style={{ marginTop: "10px" }}></div>
-                                </li>
-                            ))}
-                        </div>
+                <MDButton onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
+                    Find My Location Automatically
+                </MDButton>
+
+                <input
+                    type="text"
+                    placeholder="Enter location manually"
+                    style={{ marginTop: "10px", padding: "10px", width: "100%" }}
+                    onKeyPress={(event) => {
+                        if (event.key === "Enter") {
+                            const geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({ address: event.target.value }, (results, status) => {
+                                if (status === google.maps.GeocoderStatus.OK) {
+                                    const userLocation = results[0].geometry.location;
+                                    if (mapInstanceRef.current) {
+                                        mapInstanceRef.current.setCenter(userLocation);
+                                        mapInstanceRef.current.setZoom(14);
+
+                                        if (markerRef.current) {
+                                            markerRef.current.setMap(null);
+                                        }
+                                        markerRef.current = new google.maps.Marker({
+                                            position: userLocation,
+                                            map: mapInstanceRef.current,
+                                            title: "You are here!",
+                                        });
+
+                                        setLocationFound(true);
+                                    }
+                                } else {
+                                    alert("Geocode was not successful for the following reason: " + status);
+                                }
+                            });
+                        }
+                    }}
+                />
+
+                {locationFound && (
+                    <div style={{ marginTop: "10px" }}>
+                        <MDButton onClick={findHospitals} style={{ marginRight: "10px", padding: "10px" }}>
+                            Find Hospitals
+                        </MDButton>
+                        <MDButton onClick={findGasstations} style={{ padding: "10px" }}>
+                            Find Gas Stations
+                        </MDButton>
                     </div>
                 )}
+
+                <Grid item xs={12} lg={12} style={{ marginTop: "20px" }}>
+                    {hospitalItems.length > 0 && (
+                        <Invoices
+                            title="Nearby Hospitals"
+                            items={hospitalItems}
+                        />
+                    )}
+                </Grid>
             </div>
         </div>
     );
+};
+
+Map.propTypes = {
+    mapType: PropTypes.string.isRequired,
 };
 
 export default Map;

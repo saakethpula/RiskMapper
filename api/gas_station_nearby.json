@@ -1,0 +1,122 @@
+[
+    {
+        "name": "Exxon",
+        "address": "263 East Chestnut Hill Road, Newark",
+        "distance_miles": "2.3 mi",
+        "contact": "(302) 266-9927"
+    },
+    {
+        "name": "bp",
+        "address": "1400 Kirkwood Highway, Newark",
+        "distance_miles": "2.8 mi",
+        "contact": "(302) 366-9694"
+    },
+    {
+        "name": "Liberty",
+        "address": "1923 Pulaski Highway, Bear",
+        "distance_miles": "6.6 mi",
+        "contact": "(302) 836-8599"
+    },
+    {
+        "name": "Route 72 Food Mart",
+        "address": "263 East Chestnut Hill Road, Newark",
+        "distance_miles": "2.3 mi",
+        "contact": "(302) 266-9927"
+    },
+    {
+        "name": "Riggins",
+        "address": "2650 Kirkwood Highway, Newark",
+        "distance_miles": "4.3 mi",
+        "contact": "(302) 731-5602"
+    },
+    {
+        "name": "Royal Farms",
+        "address": "2808 Pulaski Highway, Newark",
+        "distance_miles": "6.8 mi",
+        "contact": "(302) 918-6340"
+    },
+    {
+        "name": "WSFS ATM (Harmony Exxon)",
+        "address": "4600 Ogletown-Stanton Road, Newark",
+        "distance_miles": "4.6 mi",
+        "contact": "N/A"
+    },
+    {
+        "name": "BP",
+        "address": "121 South Main Street, Newark",
+        "distance_miles": "0.8 mi",
+        "contact": "(302) 273-3188"
+    },
+    {
+        "name": "Wawa",
+        "address": "601 Ogletown Road, Newark",
+        "distance_miles": "1.3 mi",
+        "contact": "(302) 294-0795"
+    },
+    {
+        "name": "Shell",
+        "address": "804 South College Avenue, Newark",
+        "distance_miles": "2.1 mi",
+        "contact": "(302) 366-0303"
+    },
+    {
+        "name": "Shell",
+        "address": "1005 South College Avenue, Newark",
+        "distance_miles": "2.5 mi",
+        "contact": "(302) 294-1176"
+    },
+    {
+        "name": "Wawa",
+        "address": "1750 Capitol Trail, Newark",
+        "distance_miles": "3.3 mi",
+        "contact": "(302) 737-8138"
+    },
+    {
+        "name": "Valero",
+        "address": "796 South Old Baltimore Pike, Newark",
+        "distance_miles": "4.0 mi",
+        "contact": "(210) 345-2000"
+    },
+    {
+        "name": "Wawa",
+        "address": "1657 Elkton Road, Elkton",
+        "distance_miles": "3.5 mi",
+        "contact": "(410) 996-8621"
+    },
+    {
+        "name": "Delaware House Travel Plaza",
+        "address": "520 JFK Memorial Hwy, Newark",
+        "distance_miles": "5.7 mi",
+        "contact": "(302) 731-8599"
+    },
+    {
+        "name": "Sunoco",
+        "address": "520 John F. Kennedy Memorial Highway, Newark",
+        "distance_miles": "5.6 mi",
+        "contact": "(302) 266-0230"
+    },
+    {
+        "name": "Liberty",
+        "address": "1005 Elk Mills Road, Elkton",
+        "distance_miles": "4.6 mi",
+        "contact": "(410) 392-7911"
+    },
+    {
+        "name": "Sunoco",
+        "address": "2360 Pulaski Highway, Newark",
+        "distance_miles": "5.7 mi",
+        "contact": "(302) 737-3752"
+    },
+    {
+        "name": "Wawa",
+        "address": "1605 Pulaski Highway, Bear",
+        "distance_miles": "6.8 mi",
+        "contact": "(302) 838-8050"
+    },
+    {
+        "name": "Friendly Auto Services",
+        "address": "5 Brookmont Drive, Newark",
+        "distance_miles": "7.4 mi",
+        "contact": "(302) 366-0420"
+    }
+]
