@@ -54,11 +54,6 @@ function Dashboard() {
                 icon="weekend"
                 title="Number of Nearby Hospitals"
                 count={hospitalNearby}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than last week",
-                }}
               />
             </MDBox>
           </Grid>
@@ -68,11 +63,6 @@ function Dashboard() {
                 icon="leaderboard"
                 title="Distance to Nearest Hospital (mi)"
                 count={nearestHospitalDistance}
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
               />
             </MDBox>
           </Grid>
@@ -83,11 +73,6 @@ function Dashboard() {
                 icon="store"
                 title="Travel Time"
                 count={traveltime}
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
               />
             </MDBox>
           </Grid>
@@ -98,11 +83,6 @@ function Dashboard() {
                 icon="person_add"
                 title="Risk Level"
                 count={risk}
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
               />
             </MDBox>
           </Grid>
