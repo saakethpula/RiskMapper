@@ -144,10 +144,10 @@ async def get_fire_stations(lat: float, lng: float, radius: int = 80500):
     return {"fire_stations": places}
 
 
-@app.get("/public-shelters/")
+@app.get("/subway-station/")
 async def get_public_shelters(lat: float, lng: float, radius: int = 80500):
-    places = get_places(lat, lng, radius, "shelter")
-    return {"public_shelters": places}
+    places = get_places(lat, lng, radius, "community_center")
+    return {"community_center": places}
 
 
 @app.get("/hospitals/")
@@ -159,7 +159,7 @@ async def get_hospitals(lat: float, lng: float, radius: int = 80500):
 @app.get("/buildings/")
 async def get_buildings(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "near me")
-    return {"building": places}
+    return {"buildings": places}
 
 
 @app.get("/public-transportation/")

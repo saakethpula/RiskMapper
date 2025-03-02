@@ -24,7 +24,7 @@ function Tsunami() {
             const fetchHospitals = async () => {
                 try {
                     const response = await fetch(
-                        `http://127.0.0.1:8000/hospitals/?lat=${lat}&lng=${lng}&radius=10000`
+                        `http://127.0.0.1:8000/viewpoints/?lat=${lat}&lng=${lng}&radius=10000`
                     );
                     const result = await response.json();
                     setData(result.hospitals || []);
@@ -160,7 +160,7 @@ function Tsunami() {
           <MDBox>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={10} lg={12}>
-                            <Projects mapState={"hospitals"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
+                            <Projects mapState={"viewpoints"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
                         </Grid>
                     </Grid>
                 </MDBox>
