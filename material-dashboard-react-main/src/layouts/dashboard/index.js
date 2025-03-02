@@ -16,6 +16,7 @@ function Medical() {
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
     const [data, setData] = useState([]);  // Initialize as an empty array
+    const risk = localStorage.getItem("riskLevel") || "Not available";
 
     useEffect(() => {
         if (lat && lng) {
@@ -103,7 +104,7 @@ function Medical() {
                                 color="primary"
                                 icon="person_add"
                                 title="Risk Level"
-                                count={hospitalNearby}
+                                count={risk}
                                 percentage={{
                                     color: "success",
                                     amount: "",
