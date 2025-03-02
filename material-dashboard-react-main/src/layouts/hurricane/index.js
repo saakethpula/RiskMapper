@@ -98,11 +98,6 @@ function Hurricane() {
                                 icon="place"
                                 title="Number of Nearby Train"
                                 count={hospitalNearby}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+55%",
-                                    label: "than last week",
-                                }}
                             />
                         </MDBox>
                     </Grid>
@@ -112,11 +107,6 @@ function Hurricane() {
                                 icon="leaderboard"
                                 title="Distance to Nearest Train (mi)"
                                 count={nearestHospitalDistance}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+3%",
-                                    label: "than last month",
-                                }}
                             />
                         </MDBox>
                     </Grid>
@@ -127,11 +117,6 @@ function Hurricane() {
                                 icon="star"
                                 title="Nearest Train Rating"
                                 count={traveltime}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+1%",
-                                    label: "than yesterday",
-                                }}
                             />
                         </MDBox>
                     </Grid>
@@ -142,11 +127,6 @@ function Hurricane() {
                                 icon="person_add"
                                 title="Risk Level"
                                 count={riskAssessment}
-                                percentage={{
-                                    color: "success",
-                                    amount: "",
-                                    label: "Just updated",
-                                }}
                             />
                         </MDBox>
                     </Grid>
