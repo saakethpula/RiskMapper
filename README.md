@@ -1,10 +1,10 @@
-#RiskMapper
+## RiskMapper
 
-Getting Started
+# Getting Started
 
 Follow these steps to run the project locally:
 
-Prerequisites
+# Prerequisites
 
 Ensure you have the following installed:
 
