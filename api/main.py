@@ -110,6 +110,10 @@ async def get_gas_stations(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "gas_station")
     return {"gas_stations": places}
 
+@app.get("/viewpoints/")
+async def get_viewpoints(lat: float, lng: float, radius: int = 80500):
+    places = get_places(lat, lng, radius, "viewpoint")
+    return {"viewpoints": places}
 
 @app.get("/grocery-stores/")
 async def get_grocery_stores(lat: float, lng: float, radius: int = 80500):
@@ -134,6 +138,10 @@ async def get_hospitals(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "hospital")
     return {"hospitals": places}
 
+@app.get("/buildings/")
+async def get_buildings(lat: float, lng: float, radius: int = 80500):
+    places = get_places(lat, lng, radius, "near me")
+    return {"building": places}
 
 @app.get("/public-transportation/")
 async def get_public_transportation(lat: float, lng: float, radius: int = 80500):
