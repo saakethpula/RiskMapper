@@ -30,6 +30,7 @@ import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatist
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
+import hospitalNearbyData from "layouts/dashboard/data/hospital_nearby.json";
 
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
@@ -37,23 +38,26 @@ import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const nearestHospitalDistance = hospitalNearbyData[0].distance_miles;
+  const hospitalNearby = hospitalNearbyData.length;
+  const traveltime = hospitalNearbyData[0].distance_miles.replace(" mi", "");
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox py={3}>
-          <Grid container spacing={3}>
+        <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
                 title="Number of Nearby Hospitals"
-                count={281}
+                count={hospitalNearby}
                 percentage={{
                   color: "success",
                   amount: "+55%",
-                  label: "than lask week",
+                  label: "than last week",
                 }}
               />
             </MDBox>
@@ -63,7 +67,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 icon="leaderboard"
                 title="Distance to Nearest Hospital (mi)"
-                count="2,300"
+                count={nearestHospitalDistance}
                 percentage={{
                   color: "success",
                   amount: "+3%",
@@ -78,7 +82,7 @@ function Dashboard() {
                 color="success"
                 icon="store"
                 title="Travel Time"
-                count="34k"
+                count={traveltime}
                 percentage={{
                   color: "success",
                   amount: "+1%",
@@ -92,8 +96,8 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="primary"
                 icon="person_add"
-                title="Number of Nearby Hospitals"
-                count="+91"
+                title="Risk Level"
+                count={hospitalNearby}
                 percentage={{
                   color: "success",
                   amount: "",
@@ -112,7 +116,6 @@ function Dashboard() {
             </Grid>
           </Grid>
         </MDBox>
-
       </MDBox>
     </DashboardLayout>
   );

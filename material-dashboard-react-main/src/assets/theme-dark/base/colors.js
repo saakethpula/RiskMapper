@@ -21,14 +21,14 @@ Coded by www.creative-tim.com
 
 const colors = {
   background: {
-    default: "#1a2035",
-    sidenav: "#1f283e",
-    card: "#202940",
+    default: "#000000",
+    sidenav: "#000000",
+    card: "#000000",
   },
 
   text: {
-    main: "#ffffffcc",
-    focus: "#ffffffcc",
+    main: "#ffffffff",
+    focus: "#ffffffff",
   },
 
   transparent: {
@@ -47,8 +47,8 @@ const colors = {
   },
 
   primary: {
-    main: "#e91e63",
-    focus: "#e91e63",
+    main: "#ffffffff",
+    focus: "#ffffffff",
   },
 
   secondary: {

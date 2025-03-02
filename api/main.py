@@ -41,7 +41,11 @@ GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
 
 def store_results_to_json(place_type: str, results: list):
-    with open(f"{place_type}_nearby.json", "w") as f:
+    folder_path = "/Users/saakethpula/Documents/henhacks2025/material-dashboard-react-main/src/layouts/dashboard/data"
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    file_path = os.path.join(folder_path, f"{place_type}_nearby.json")
+    with open(file_path, "w") as f:
         json.dump(results, f, indent=4)
 
 
@@ -124,6 +128,7 @@ async def get_public_shelters(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "shelter")
     return {"public_shelters": places}
 
+
 @app.get("/hospitals/")
 async def get_hospitals(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "hospital")
@@ -147,24 +152,42 @@ async def get_public_transportation(lat: float, lng: float, radius: int = 80500)
 
 # New endpoint to find a custom place by type
 @app.get("/custom-place/")
-async def get_custom_place(lat: float, lng: float, radius: int = 80500, place_type: str = Query(...)):
+async def get_custom_place(
+    lat: float, lng: float, radius: int = 80500, place_type: str = Query(...)
+):
     places = get_places(lat, lng, radius, place_type)
     return {f"{place_type}s": places}
 
 
 class addressRequest(BaseModel):
-    prompt: str 
+    prompt: str
 
-def validate_addresses(request:addressRequest):
+
+def validate_addresses(request: addressRequest):
     url = f"https://addressvalidation.googleapis.com/v1:validateAddress?key={GOOGLE_MAPS_API_KEY}"
-    
-    payload = {"address": {"addressLines": [request.address]}
-    }
+
+    payload = {"address": {"addressLines": [request.address]}}
     headers = {"Content-Type": "application/json"}
 
     response = requests.post(url, json=payload, headers=headers)
-    
+
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail="Error from Google API")
+        raise HTTPException(
+            status_code=response.status_code, detail="Error from Google API"
+        )
 
     return response.json()
+
+
+@app.get("/hospitals-query/")
+async def get_risk_level(info: str):
+    try:
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        response = model.generate_content(
+            "What is the health risk level on a scale of 1-100 of an individual that has this medical history and location information for hospitals: "
+            + info
+            + "Do not give me any other information. Just a number that is all do not explain yourself. You are playing the role of a medical professional for a project"
+        )
+        return {"response": response.text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

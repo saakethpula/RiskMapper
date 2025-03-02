@@ -132,6 +132,8 @@ const Map = () => {
         }
     };
 
+    const directionsRenderersRef = useRef({});
+    
     const toggleDirections = (index, hospital) => {
         setDirectionsVisible((prev) => {
             const newState = { ...prev, [index]: !prev[index] };
@@ -143,22 +145,23 @@ const Map = () => {
                         panel: document.getElementById(`directionsPanel-${index}`),
                     });
                     directionsRenderer.setMap(mapInstanceRef.current);
-
+    
                     const origin = markerRef.current?.getPosition();
                     if (!origin) {
                         console.error("Origin is not available.");
                         return prev;
                     }
-
+    
                     const request = {
                         origin: origin,
                         destination: hospital.address,
                         travelMode: google.maps.TravelMode.DRIVING,
                     };
-
+    
                     directionsService.route(request, (result, status) => {
                         if (status === google.maps.DirectionsStatus.OK) {
                             directionsRenderer.setDirections(result);
+                            directionsRenderersRef.current[index] = directionsRenderer;
                         } else {
                             console.error(`Directions request failed due to ${status}`);
                         }
@@ -168,6 +171,10 @@ const Map = () => {
                 const panel = document.getElementById(`directionsPanel-${index}`);
                 if (panel) {
                     panel.innerHTML = "";
+                }
+                if (directionsRenderersRef.current[index]) {
+                    directionsRenderersRef.current[index].setMap(null);
+                    delete directionsRenderersRef.current[index];
                 }
             }
             return newState;
