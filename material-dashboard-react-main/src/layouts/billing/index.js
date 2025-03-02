@@ -22,66 +22,86 @@ import MDBox from "components/MDBox";
 // Material Dashboard 2 React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import MasterCard from "examples/Cards/MasterCard";
-import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
-
-// Billing page components
-import PaymentMethod from "layouts/billing/components/PaymentMethod";
-import Invoices from "layouts/billing/components/Invoices";
-import BillingInformation from "layouts/billing/components/BillingInformation";
-import Transactions from "layouts/billing/components/Transactions";
+import ComplexStatisticsCard from "../../examples/Cards/StatisticsCards/ComplexStatisticsCard";
+import Projects from "../dashboard/components/Projects";
 
 function Billing() {
   return (
     <DashboardLayout>
       <DashboardNavbar absolute isMini />
-      <MDBox mt={8}>
-        <MDBox mb={3}>
+      <MDBox py={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                  color="dark"
+                  icon="weekend"
+                  title="Number of Nearby Hospitals"
+                  count={281}
+                  percentage={{
+                    color: "success",
+                    amount: "+55%",
+                    label: "than lask week",
+                  }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                  icon="leaderboard"
+                  title="Distance to Nearest Hospital (mi)"
+                  count="2,300"
+                  percentage={{
+                    color: "success",
+                    amount: "+3%",
+                    label: "than last month",
+                  }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                  color="success"
+                  icon="store"
+                  title="Travel Time"
+                  count="34k"
+                  percentage={{
+                    color: "success",
+                    amount: "+1%",
+                    label: "than yesterday",
+                  }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                  color="primary"
+                  icon="person_add"
+                  title="Number of Nearby Hospitals"
+                  count="+91"
+                  percentage={{
+                    color: "success",
+                    amount: "",
+                    label: "Just updated",
+                  }}
+              />
+            </MDBox>
+          </Grid>
+        </Grid>
+        <MDBox>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={8}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} xl={6}>
-                  <MasterCard number={4562112245947852} holder="jack peterson" expires="11/22" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard
-                    icon="account_balance"
-                    title="salary"
-                    description="Belong Interactive"
-                    value="+$2000"
-                  />
-                </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard
-                    icon="paypal"
-                    title="paypal"
-                    description="Freelance Payment"
-                    value="$455.00"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <PaymentMethod />
-                </Grid>
-              </Grid>
+            <Grid item xs={12} md={10} lg={12}>
+              <Projects />
             </Grid>
-            <Grid item xs={12} lg={4}>
-              <Invoices />
+            <Grid item xs={12} md={6} lg={4}>
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox mb={3}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={7}>
-              <BillingInformation />
-            </Grid>
-            <Grid item xs={12} md={5}>
-              <Transactions />
-            </Grid>
-          </Grid>
-        </MDBox>
+
       </MDBox>
-      <Footer />
     </DashboardLayout>
   );
 }
