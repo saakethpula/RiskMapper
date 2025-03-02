@@ -1,122 +1,44 @@
 [
     {
-        "name": "Exceptional Care for Children",
-        "address": "11 Independence Way, Newark",
-        "distance_miles": "3.0 mi",
-        "contact": "(302) 894-1001"
+        "name": "Delaware Imaging Network | Middletown",
+        "address": "120 Sandhill Drive # 2, Middletown",
+        "distance_miles": "5.6 mi",
+        "contact": "(302) 449-5400"
     },
     {
-        "name": "ChristianaCare Center for Heart and Vascular Health",
-        "address": "4755 Ogletown-Stanton Road, Newark",
+        "name": "Health South Rehab hospital",
+        "address": "706 Middletown Odessa Road #692, Middletown",
+        "distance_miles": "7.5 mi",
+        "contact": "(302) 464-3200"
+    },
+    {
+        "name": "Medical Oncology Hematology Consultants \u2013 Middletown",
+        "address": "651 North Broad Street Suite 406, Middletown",
+        "distance_miles": "5.6 mi",
+        "contact": "(302) 366-1200"
+    },
+    {
+        "name": "Aquila Of Delaware Inc.",
+        "address": "2950 Red Lion Road, Bear",
+        "distance_miles": "7.7 mi",
+        "contact": "(302) 999-1106"
+    },
+    {
+        "name": "ChristianaCare Primary Care at Whitehall",
+        "address": "735 Mapleton Avenue Suite 100, Middletown",
         "distance_miles": "6.1 mi",
-        "contact": "(302) 733-1000"
+        "contact": "(302) 203-2440"
     },
     {
-        "name": "Delaware Imaging Network | Polly Drummond",
-        "address": "40 Polly Drummond Hill Road Bldg. 4, Newark",
-        "distance_miles": "3.1 mi",
-        "contact": "(302) 737-5990"
-    },
-    {
-        "name": "Delaware Imaging Network | Glasgow",
-        "address": "2600 Glasgow Avenue #122, Newark",
+        "name": "Abuwen Infusion and Healthcare Services LLC",
+        "address": "12 Pennington Street # 100, Middletown",
         "distance_miles": "6.3 mi",
-        "contact": "(302) 832-5590"
+        "contact": "(302) 698-8691"
     },
     {
-        "name": "ChristianaCare Christiana Hospital",
-        "address": "4755 Ogletown-Stanton Road, Newark",
-        "distance_miles": "5.5 mi",
-        "contact": "(302) 733-1000"
-    },
-    {
-        "name": "Becks Woods Medical Center",
-        "address": "100 Becks Woods Drive, Bear",
-        "distance_miles": "7.4 mi",
-        "contact": "(302) 836-8200"
-    },
-    {
-        "name": "Brandywine Center Llc",
-        "address": "Drummond Plz Ofc Park, Newark",
-        "distance_miles": "0.6 mi",
-        "contact": "(302) 454-7650"
-    },
-    {
-        "name": "Dr. Molly T. Sandrian",
-        "address": "27 Marrows Road, Newark",
-        "distance_miles": "2.9 mi",
-        "contact": "(302) 455-0900"
-    },
-    {
-        "name": "ChristianaCare Ambulatory Infusion Center",
-        "address": "4755 Ogletown-Stanton Road Room 1580, Newark",
-        "distance_miles": "5.4 mi",
-        "contact": "(302) 733-1548"
-    },
-    {
-        "name": "Christiana care II",
-        "address": "Hygeia Drive, Newark",
-        "distance_miles": "5.6 mi",
-        "contact": "N/A"
-    },
-    {
-        "name": "CHRIAS: Christiana Hospital Office",
-        "address": "4755 Ogletown-Stanton Road, Newark",
-        "distance_miles": "5.5 mi",
-        "contact": "(302) 892-9900"
-    },
-    {
-        "name": "ChristianaCare Christiana Hospital Emergency Department",
-        "address": "4755 Ogletown-Stanton Road, Newark",
-        "distance_miles": "6.1 mi",
-        "contact": "(302) 733-1000"
-    },
-    {
-        "name": "SMILE for Humanity",
-        "address": "158 Darling Street, Newark",
-        "distance_miles": "7.2 mi",
-        "contact": "(302) 367-5915"
-    },
-    {
-        "name": "First State Pediatrics",
-        "address": "210 Christiana Medical Center, Newark",
-        "distance_miles": "6.4 mi",
-        "contact": "(302) 368-2501"
-    },
-    {
-        "name": "Gastroenterology Associates of Delaware: Lobis Ira F MD",
-        "address": "4745 Ogletown-Stanton Road, Newark",
-        "distance_miles": "5.5 mi",
-        "contact": "(302) 738-5300"
-    },
-    {
-        "name": "Delaware Advanced Vein Center",
-        "address": "40 Omega Drive Bldg G, Newark",
-        "distance_miles": "5.6 mi",
-        "contact": "(302) 731-0001"
-    },
-    {
-        "name": "Health South Rehab Center New",
-        "address": "314 East Main Street, Newark",
-        "distance_miles": "1.4 mi",
-        "contact": "N/A"
-    },
-    {
-        "name": "Tree of Life Herbal & Naturopathic Hospital and Trauma Centers LLC",
-        "address": "40 East Main Street, Newark",
-        "distance_miles": "0.5 mi",
-        "contact": "0866 516 0664"
-    },
-    {
-        "name": "Laurel Hall",
-        "address": "282 The Green, Newark",
-        "distance_miles": "0.9 mi",
-        "contact": "N/A"
-    },
-    {
-        "name": "Fresh Delaware",
-        "address": "800 Ogletown Road, Newark",
-        "distance_miles": "1.7 mi",
-        "contact": "(302) 608-9595"
+        "name": "Delaware Integrative Healthcare",
+        "address": "Ashley Plaza, 421 East Main Street, Middletown",
+        "distance_miles": "7.7 mi",
+        "contact": "(302) 376-5830"
     }
 ]

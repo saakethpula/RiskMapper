@@ -121,6 +121,50 @@ const Map = ({ mapType }) => {
         }
     };
 
+    const findHospitals = async () => {
+        if (markerRef.current) {
+            const userLocation = markerRef.current.getPosition();
+            if (userLocation) {
+                const lat = userLocation.lat();
+                const lng = userLocation.lng();
+
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/hospitals/?lat=${lat}&lng=${lng}&radius=10000`
+                    );
+                    const data = await response.json();
+                    setData({ hospitals: data.hospitals });
+                    console.log("Hospitals:", data.hospitals);
+                } catch (error) {
+                    console.error("Error fetching hospitals:", error);
+                }
+            }
+        }
+    };
+
+    const findGasstations = async () => {
+        if (markerRef.current) {
+            const userLocation = markerRef.current.getPosition();
+            if (userLocation) {
+                const lat = userLocation.lat();
+                const lng = userLocation.lng();
+
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/gas-stations/?lat=${lat}&lng=${lng}&radius=10000`
+                    );
+                    const data = await response.json();
+                    setData({ gas_stations: data.gas_stations });
+                    console.log("Gas Stations:", data.gas_stations);
+                } catch (error) {
+                    console.error("Error fetching gas stations:", error);
+                }
+            }
+        }
+    };
+
+    const directionsRenderersRef = useRef({});
+
     const toggleDirections = (index, hospital) => {
         setDirectionsVisible((prev) => {
             const newState = { ...prev, [index]: !prev[index] };
@@ -132,22 +176,23 @@ const Map = ({ mapType }) => {
                         panel: document.getElementById(`directionsPanel-${index}`),
                     });
                     directionsRenderer.setMap(mapInstanceRef.current);
-
+    
                     const origin = markerRef.current?.getPosition();
                     if (!origin) {
                         console.error("Origin is not available.");
                         return prev;
                     }
-
+    
                     const request = {
                         origin: origin,
                         destination: hospital.address,
                         travelMode: google.maps.TravelMode.DRIVING,
                     };
-
+    
                     directionsService.route(request, (result, status) => {
                         if (status === google.maps.DirectionsStatus.OK) {
                             directionsRenderer.setDirections(result);
+                            directionsRenderersRef.current[index] = directionsRenderer;
                         } else {
                             console.error(`Directions request failed due to ${status}`);
                         }
@@ -157,6 +202,10 @@ const Map = ({ mapType }) => {
                 const panel = document.getElementById(`directionsPanel-${index}`);
                 if (panel) {
                     panel.innerHTML = "";
+                }
+                if (directionsRenderersRef.current[index]) {
+                    directionsRenderersRef.current[index].setMap(null);
+                    delete directionsRenderersRef.current[index];
                 }
             }
             return newState;
