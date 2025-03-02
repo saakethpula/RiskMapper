@@ -54,6 +54,7 @@ import requests
 
 import requests
 
+
 def get_places(lat: float, lng: float, radius: int, place_type: str):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     params = {
@@ -108,7 +109,9 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
         )
 
     # Sort only the first 5 places by distance (from greatest to least)
-    first_five_sorted = sorted(places[:5], key=lambda x: x["distance_miles"], reverse=False)
+    first_five_sorted = sorted(
+        places[:5], key=lambda x: x["distance_miles"], reverse=False
+    )
 
     # Append the remaining places (unsorted)
     places_sorted = first_five_sorted + places[5:]
@@ -122,10 +125,12 @@ async def get_gas_stations(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "gas_station")
     return {"gas_stations": places}
 
+
 @app.get("/viewpoints/")
 async def get_viewpoints(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "viewpoint")
     return {"viewpoints": places}
+
 
 @app.get("/grocery-stores/")
 async def get_grocery_stores(lat: float, lng: float, radius: int = 80500):
@@ -150,10 +155,12 @@ async def get_hospitals(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "hospital")
     return {"hospitals": places}
 
+
 @app.get("/buildings/")
 async def get_buildings(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "near me")
     return {"buildings": places}
+
 
 @app.get("/public-transportation/")
 async def get_public_transportation(lat: float, lng: float, radius: int = 80500):
@@ -233,7 +240,7 @@ async def get_risk_assessment(lat: float, lng: float):
         prompt_text = (
             f"Assess the likelihood of natural disasters for the coordinates ({lat}, {lng}) on a scale from 0 to 100. "
             "The response should be formatted as follows:\n"
-            " Wildfire Risk: [value], Hurricane Risk: [value], Earthquake Risk: [value], Tsunami Risk: [value], Nuclear Event: [value]'.\n"
+            "Wildfire Risk: [value], Hurricane Risk: [value], Earthquake Risk: [value], Tsunami Risk: [value], Nuclear Event: [value].\n"
             "Return only the values with no additional text or formatting."
         )
 
@@ -242,7 +249,12 @@ async def get_risk_assessment(lat: float, lng: float):
 
         if response and response.text:
             response_text = response.text.replace("#", " ").replace("*", " ").strip()
-            return {"risk_assessment": response_text}
+            risk_values = response_text.split(", ")
+            risk_dict = {}
+            for risk in risk_values:
+                key, value = risk.split(": ")
+                risk_dict[key.strip()] = int(value.strip())
+            return {"risk_assessment": risk_dict}
         else:
             return {"error": "Could not generate AI risk assessment."}
 

@@ -18,6 +18,7 @@ function Wildfire() {
     const [lng, setLng] = useState(null);
     const [data, setData] = useState([]);  
     const [disasterResponse, setDisasterResponse] = useState(null); // Store API response
+    const [riskAssessment, setRiskAssessment] = useState("N/A"); // Store API response
     const risk = localStorage.getItem("riskLevel") || "Not available";
 
     useEffect(() => {
@@ -59,7 +60,24 @@ function Wildfire() {
             fetchDisasterResponse();
         }
     }, [lat, lng]);
-
+    useEffect(() => {
+        if (lat !== null && lng !== null) {
+            const fetchRiskAssessment = async () => {
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/risk-assessment?lat=${lat}&lng=${lng}`
+                    );
+                    const result = await response.json();
+                    console.log("Risk Assessment:", result["risk_assessment"]["Wildfire Risk"]);
+                    setRiskAssessment(result["risk_assessment"]["Wildfire Risk"]);
+                } catch (error) {
+                    console.error("Error fetching risk assessment:", error);
+                }
+            };
+  
+            fetchRiskAssessment();
+        }
+    }, [lat, lng]);
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -67,8 +85,8 @@ function Wildfire() {
     // Ensure safe access
     const nearestHospitalDistance = data.length > 0 ? data[0]?.distance_miles : "N/A";
     const hospitalNearby = data.length;  // Length of hospitals array
-    const traveltime = data.length > 0 ? data[0]?.distance_miles.replace(" mi", "") : "N/A";  // Access first hospital
-
+    const traveltime = data.length > 0 ? (data[0].rating || "N/A") : "N/A"; 
+    console.log(traveltime)
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -79,7 +97,7 @@ function Wildfire() {
                             <ComplexStatisticsCard
                                 color="dark"
                                 icon="place"
-                                title="Number of Nearby Hospitals"
+                                title="Number of Nearby Fire Stations"
                                 count={hospitalNearby}
                                 fontSize="small"
                             />
@@ -89,7 +107,7 @@ function Wildfire() {
                         <MDBox mb={1.5}>
                             <ComplexStatisticsCard
                                 icon="leaderboard"
-                                title="Distance to Nearest Hospital (mi)"
+                                title="Distance to Nearest First Station (mi)"
                                 count={nearestHospitalDistance}
                                 fontSize="small"
                             />
@@ -100,7 +118,7 @@ function Wildfire() {
                             <ComplexStatisticsCard
                                 color="success"
                                 icon="star"
-                                title="Nearest Hospital Rating"
+                                title="Nearest Fire Station Rating"
                                 count={traveltime}
                                 fontSize="small"
                             />
@@ -112,7 +130,7 @@ function Wildfire() {
                                 color="primary"
                                 icon="person_add"
                                 title="Risk Level"
-                                count={risk}
+                                count={riskAssessment}
                                 fontSize="small"
                             />
                         </MDBox>

@@ -47,7 +47,7 @@ function Medical() {
     // Ensure safe access
     const nearestHospitalDistance = data.length > 0 ? data[0]?.distance_miles : "N/A";
     const hospitalNearby = data.length;  // Length of hospitals array
-    const traveltime = data.length > 0 ? data[0]?.distance_miles.replace(" mi", "") : "N/A";  // Access first hospital
+    const traveltime = data.length > 0 ? (data[0].rating || "N/A") : "N/A"; 
 
     return (
         <DashboardLayout>
@@ -98,13 +98,9 @@ function Medical() {
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={10} lg={12}>
                             <Projects mapState={"hospital"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
-
                         </Grid>
-
                     </Grid>
-
                 </MDBox>
-
             </MDBox>
         </DashboardLayout>
     );
