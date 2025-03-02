@@ -1,3 +1,4 @@
+import random
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests
@@ -6,6 +7,7 @@ from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
+import re
 import json
 from datetime import datetime
 import google.generativeai as genai
@@ -193,17 +195,18 @@ async def get_risk_assessment(lat: float, lng: float):
     try:
         # Construct prompt for Gemini AI
         prompt_text = (
-            f"You are a risk assessment AI. Assess the likelihood of hurricanes, tornadoes, "
-            f"tsunamis, earthquakes, floods, and wildfires for the coordinates ({lat}, {lng}) on a scale from 0 to 100. "
-            f"Use scientific data and historical trends to provide a risk level (Low, Medium, High) for each. "
-            f"Be concise. don't use *" 
-        )
+            f"Assess the likelihood of natural disasters for the coordinates ({lat}, {lng}) on a scale from 0 to 100. "
+            "The response should be formatted as follows:\n"
+            "'Hurricane Risk: [value], Earthquake Risk: [value], Wildfire Risk: [value], Flood Risk: [value], Tornado Risk: [value], Tsunami Risk: [value]'.\n"
+            "Return only the values with no additional text or formatting."
+)
+
 
         model = genai.GenerativeModel("gemini-2.0-flash")
         response = model.generate_content(prompt_text)
 
         if response and response.text:
-            response_text = response.text.replace("\n", " ").replace("*", " ").strip()
+            response_text = response.text.replace("#", " ").replace("*", " ").strip()
             return {"risk_assessment": response_text}
         else:
             return {"error": "Could not generate AI risk assessment."}
@@ -212,45 +215,64 @@ async def get_risk_assessment(lat: float, lng: float):
         raise HTTPException(status_code=500, detail=f"Error generating risk assessment: {str(e)}")
 
 @app.get("/disaster-response")
-def generate_disaster_response(disaster_type: str = Query(..., description="Type of disaster (e.g., earthquake, hurricane, wildfire, flood, tornado, tsunami)")):
+async def generate_disaster_response(disaster_type: str = Query(..., description="Type of disaster (e.g., earthquake, hurricane, wildfire, flood, tornado, tsunami)"),
+                                      lat: float = Query(..., description="Latitude for disaster location"),
+                                      lng: float = Query(..., description="Longitude for disaster location")):
     """
-    Provides concise evacuation plans and necessary essentials based on the disaster type.
+    Provides concise evacuation plans and necessary essentials based on the disaster type and coordinates.
     """
 
     # Normalize input (convert to lowercase and remove leading/trailing spaces)
     disaster_type = disaster_type.strip().lower()
 
-    # Define prompts for different disaster types
-    prompts = {
-        "earthquake": "Provide a concise earthquake evacuation plan and a list of essential survival items.",
-        "hurricane": "Concisely describe the steps for hurricane evacuation and the essential supplies needed.",
-        "wildfire": "Concisely explain the wildfire evacuation process and list the necessary emergency kit items.",
-        "flood": "Give a concise flood evacuation strategy and list essential survival gear.",
-        "tornado": "Outline a concise tornado emergency plan and recommended emergency supplies.",
-        "tsunami": "Detail a concise tsunami evacuation procedure and essential preparedness items."
-    }
-
     # Validate disaster type
-    if disaster_type not in prompts:
+    valid_disasters = ["earthquake", "hurricane", "wildfire", "flood", "tornado", "tsunami"]
+    if disaster_type not in valid_disasters:
         raise HTTPException(
             status_code=400, 
             detail="Invalid disaster type. Use one of: earthquake, hurricane, wildfire, flood, tornado, tsunami."
         )
 
     try:
+        # Dynamic prompt structure
+        prompt = f"Provide a concise evacuation plan for a {disaster_type} with each step on a new line and a list of essential survival items."
+
         # Call Gemini AI
         model = genai.GenerativeModel("gemini-2.0-flash")
-        response = model.generate_content(prompts[disaster_type])
+        response = model.generate_content(prompt)
 
         # Extract and clean response text
-        ai_response_text = response.text.replace("\n", " ").replace("*", " ").strip() if response and response.text else "Error generating response."
+        ai_response_text = response.text.strip() if response and response.text else "Error generating response."
 
-        return {"response": ai_response_text}
+        # Consistent formatting of the response text
+        ai_response_text = ai_response_text.replace("*", " ").replace("#", " ").strip()
+        
+        #ai_response_text = re.sub(r'\s+', ' ', ai_response_text)
 
+        return {
+            "response": ai_response_text,
+        }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"AI processing error: {str(e)}")
-    
-   
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error generating response: {str(e)}"
+        )
+
+@app.get("/random-disaster/")
+async def generate_random_disaster():
+    # List of possible disaster types
+    disaster_types = ["earthquake", "hurricane", "tornado", "wildfire", "flood", "tsunami"]
+
+    # Generate a random disaster type
+    disaster_type = random.choice(disaster_types)
+
+    # Generate random coordinates (for example, within the continental US)
+    lat = random.uniform(24.396308, 49.384358)  # Latitude range for the continental US
+    lng = random.uniform(-125.0, -66.93457)  # Longitude range for the continental US
+
+    # Return the disaster type and coordinates
+    return {"disaster_type": disaster_type, "coordinates": {"lat": lat, "lng": lng}}
+
 @app.get("/disasters-near-me/")
 async def get_disasters_near_me(lat: float, lng: float):
     try:
