@@ -67,7 +67,7 @@ function Medical() {
                     <Grid item xs={12} md={6} lg={3}>
                         <MDBox mb={1.5}>
                             <ComplexStatisticsCard
-                                icon="leaderboard"
+                                icon="directions_car"
                                 title="Distance to Nearest Hospital (mi)"
                                 count={nearestHospitalDistance}
                             />
@@ -87,7 +87,7 @@ function Medical() {
                         <MDBox mb={1.5}>
                             <ComplexStatisticsCard
                                 color="primary"
-                                icon="person_add"
+                                icon="reportproblem"
                                 title="Risk Level"
                                 count={risk}
                             />
