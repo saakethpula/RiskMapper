@@ -5,9 +5,7 @@ from fastapi import Query
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
-
 import google.generativeai as genai
-
 import json
 
 load_dotenv()
@@ -41,7 +39,7 @@ GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
 
 def store_results_to_json(place_type: str, results: list):
-    with open(f"{place_type}_nearby.json", "w") as f:
+    with open(f'{place_type}_nearby.json', 'w') as f:
         json.dump(results, f, indent=4)
 
 
@@ -71,11 +69,7 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
             "key": GOOGLE_MAPS_API_KEY,
         }
         distance_response = requests.get(distance_url, params=distance_params).json()
-        distance_text = (
-            distance_response["rows"][0]["elements"][0]
-            .get("distance", {})
-            .get("text", "N/A")
-        )
+        distance_text = distance_response["rows"][0]["elements"][0].get("distance", {}).get("text", "N/A")
 
         details_url = "https://maps.googleapis.com/maps/api/place/details/json"
         details_params = {
@@ -84,18 +78,14 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
             "key": GOOGLE_MAPS_API_KEY,
         }
         details_response = requests.get(details_url, params=details_params).json()
-        contact_info = details_response.get("result", {}).get(
-            "formatted_phone_number", "N/A"
-        )
+        contact_info = details_response.get("result", {}).get("formatted_phone_number", "N/A")
 
-        places.append(
-            {
-                "name": place.get("name"),
-                "address": place.get("vicinity"),
-                "distance_miles": distance_text,
-                "contact": contact_info,
-            }
-        )
+        places.append({
+            "name": place.get("name"),
+            "address": place.get("vicinity"),
+            "distance_miles": distance_text,
+            "contact": contact_info,
+        })
 
     store_results_to_json(place_type, places)
     return places
@@ -123,6 +113,7 @@ async def get_fire_stations(lat: float, lng: float, radius: int = 80500):
 async def get_public_shelters(lat: float, lng: float, radius: int = 80500):
     places = get_places(lat, lng, radius, "shelter")
     return {"public_shelters": places}
+
 
 @app.get("/hospitals/")
 async def get_hospitals(lat: float, lng: float, radius: int = 80500):
@@ -153,17 +144,18 @@ async def get_custom_place(lat: float, lng: float, radius: int = 80500, place_ty
 
 
 class addressRequest(BaseModel):
-    prompt: str 
+    prompt: str
 
-def validate_addresses(request:addressRequest):
+
+def validate_addresses(request: addressRequest):
     url = f"https://addressvalidation.googleapis.com/v1:validateAddress?key={GOOGLE_MAPS_API_KEY}"
-    
+
     payload = {"address": {"addressLines": [request.address]}
-    }
+               }
     headers = {"Content-Type": "application/json"}
 
     response = requests.post(url, json=payload, headers=headers)
-    
+
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail="Error from Google API")
 

@@ -106,7 +106,7 @@ function Dashboard() {
         <MDBox>
           <Grid container spacing={3}>
             <Grid item xs={12} md={10} lg={12}>
-              <Projects />
+              <Projects mapState={"hospital"} />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
             </Grid>
