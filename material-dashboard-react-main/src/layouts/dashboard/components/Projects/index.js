@@ -19,6 +19,7 @@ function Projects({ mapState, lat, lng, setLat, setLng}) {  // Accept lat and ln
             <MDBox>
                 {/* Pass mapState, lat, and lng to Map */}
                 <Map mapType={mapState} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
+
             </MDBox>
         </Card>
     );
