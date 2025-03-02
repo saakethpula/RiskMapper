@@ -31,7 +31,6 @@ import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatist
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import hospitalNearbyData from "layouts/dashboard/data/hospital_nearby.json";
-
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
@@ -41,7 +40,6 @@ function Dashboard() {
   const nearestHospitalDistance = hospitalNearbyData[0].distance_miles;
   const hospitalNearby = hospitalNearbyData.length;
   const traveltime = hospitalNearbyData[0].distance_miles.replace(" mi", "");
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -97,7 +95,7 @@ function Dashboard() {
                 color="primary"
                 icon="person_add"
                 title="Risk Level"
-                count={hospitalNearby}
+                count={risk}
                 percentage={{
                   color: "success",
                   amount: "",
