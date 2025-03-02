@@ -85,6 +85,18 @@ const Map = ({ mapType, lat, lng, setLat, setLng }) => {
         }
     }, [data]);
 
+    useEffect(() => {
+        if (data && mapType == "public_transportation") {
+            const formattedItems = data.public_transportation.slice(0, 5).map((public_transportation, index) => ({
+                label1: public_transportation.name,
+                label2: public_transportation.address,
+                label3: public_transportation.distance_miles,
+                noGutter: index === 4,
+            }));
+            setHospitalItems(formattedItems);
+        }
+    }, [data]);
+
     const locateUser = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -130,6 +142,17 @@ const Map = ({ mapType, lat, lng, setLat, setLng }) => {
                                 setData({fire_stations: data.fire_stations});
                             } catch (error) {
                                 console.error("Error fetching fire_stations:", error);
+                            }
+                        }
+                        else if (mapType === "public_transportation") {
+                            try {
+                                const response = await fetch(
+                                    `http://127.0.0.1:8000/public-transportation/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                                );
+                                const data = await response.json();
+                                setData({public_transportation: data.public_transportation});
+                            } catch (error) {
+                                console.error("Error fetching public_transportation:", error);
                             }
                         }
                     }
@@ -195,36 +218,43 @@ const Map = ({ mapType, lat, lng, setLat, setLng }) => {
         }
     }, [directionData]);
 
-return (
-    <div style={{ display: "flex", justifyContent: "left", textAlign: "center", padding: "20px" }}>
-        <div ref={mapRef} style={{ height: "700px", width: "70%" }}></div>
-        <div style={{ marginLeft: "20px", width: "30%" }}>
-            <MDButton onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
-                Find My Location Automatically
-            </MDButton>
+    return (
+        <div style={{ display: "flex", justifyContent: "left", textAlign: "center", padding: "20px" }}>
+            <div ref={mapRef} style={{ height: "700px", width: "70%" }}></div>
+            <div style={{ marginLeft: "20px", width: "30%" }}>
+                <MDButton onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
+                    Find My Location Automatically
+                </MDButton>
 
-            <Grid item xs={12} lg={12} style={{ marginTop: "20px" }}>
-                {!directionData ? (
-                    mapType === "hospital" && hospitalItems.length > 0 ? (
-                        <Invoices
-                            title="Nearby Hospitals"
-                            items={hospitalItems}
-                            setDirectionData={setDirectionData}
-                        />
-                    ) : mapType === "fire_stations" && hospitalItems.length > 0 ? (
-                        <Invoices
-                            title="Nearby Fire Stations"
-                            items={hospitalItems}
-                            setDirectionData={setDirectionData}
-                        />
-                    ) : null
-                ) : (
-                    <div id="directionsPanel" style={{ marginTop: "10px" }} />
-                )}
-            </Grid>
+                <Grid item xs={12} lg={12} style={{ marginTop: "20px" }}>
+                    {!directionData ? (
+                        mapType === "hospital" && hospitalItems.length > 0 ? (
+                            <Invoices
+                                title="Nearby Hospitals"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        ) : mapType === "fire_stations" && hospitalItems.length > 0 ? (
+                            <Invoices
+                                title="Nearby Fire Stations"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        ) : mapType === "public_transportation" && hospitalItems.length > 0 ? (
+                            <Invoices
+                                title="Nearby Public Transportation"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        ) : null
+                    ) : (
+                        <div id="directionsPanel" style={{ marginTop: "10px" }} />
+                    )}
+                </Grid>
+            </div>
         </div>
-    </div>
-);
+    );
+
 
 };
 
