@@ -21,6 +21,7 @@ function Projects({ mapState }) {  // Accept mapState as a prop
             <MDBox>
                 <Map mapType={mapState} />  {/* Pass mapState to Map */}
             </MDBox>
+
         </Card>
     );
 }
