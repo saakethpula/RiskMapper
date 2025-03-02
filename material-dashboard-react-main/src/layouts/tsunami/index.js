@@ -94,7 +94,7 @@ function Tsunami() {
                 <ComplexStatisticsCard
                   color="dark"
                   icon="place"
-                  title="Number of Nearby Hospitals"
+                  title="Number of Nearby High Areas"
                   count={hospitalNearby}
                   percentage={{
                     color: "success",
@@ -110,7 +110,7 @@ function Tsunami() {
               <MDBox mb={1.5}>
                 <ComplexStatisticsCard
                   icon="leaderboard"
-                  title="Distance to Nearest Hospital (mi)"
+                  title="Distance to Nearest High Ground (mi)"
                   count={nearestHospitalDistance}
                   percentage={{
                     color: "success",
@@ -127,7 +127,7 @@ function Tsunami() {
                 <ComplexStatisticsCard
                   color="success"
                   icon="star"
-                  title="Nearest Hospital Rating"
+                  title="Nearest High Ground Rating"
                   count={traveltime}
                   percentage={{
                     color: "success",

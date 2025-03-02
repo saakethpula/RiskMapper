@@ -18,6 +18,7 @@ function Earthquake() {
     const [data, setData] = useState([]);  
     const [disasterResponse, setDisasterResponse] = useState(null); // Store API response
     const [riskAssessment, setRiskAssessment] = useState(null); // Store API response
+
     useEffect(() => {
         if (lat && lng) {
             const fetchHospitals = async () => {
@@ -95,7 +96,7 @@ function Earthquake() {
                             <ComplexStatisticsCard
                                 color="dark"
                                 icon="place"
-                                title="Number of Nearby Hospitals"
+                                title="Number of Nearby Buildings"
                                 count={hospitalNearby}
                                 percentage={{
                                     color: "success",
@@ -109,7 +110,7 @@ function Earthquake() {
                         <MDBox mb={1.5}>
                             <ComplexStatisticsCard
                                 icon="leaderboard"
-                                title="Distance to Nearest Hospital (mi)"
+                                title="Distance to Nearest Building (mi)"
                                 count={nearestHospitalDistance}
                                 percentage={{
                                     color: "success",
@@ -124,7 +125,7 @@ function Earthquake() {
                             <ComplexStatisticsCard
                                 color="success"
                                 icon="star"
-                                title="Nearest Hospital Rating"
+                                title="Nearest Building Rating"
                                 count={traveltime}
                                 percentage={{
                                     color: "success",

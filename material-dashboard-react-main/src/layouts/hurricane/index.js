@@ -96,7 +96,7 @@ function Hurricane() {
                             <ComplexStatisticsCard
                                 color="dark"
                                 icon="place"
-                                title="Number of Nearby Hospitals"
+                                title="Number of Nearby Train"
                                 count={hospitalNearby}
                                 percentage={{
                                     color: "success",
@@ -110,7 +110,7 @@ function Hurricane() {
                         <MDBox mb={1.5}>
                             <ComplexStatisticsCard
                                 icon="leaderboard"
-                                title="Distance to Nearest Hospital (mi)"
+                                title="Distance to Nearest Train (mi)"
                                 count={nearestHospitalDistance}
                                 percentage={{
                                     color: "success",
@@ -125,7 +125,7 @@ function Hurricane() {
                             <ComplexStatisticsCard
                                 color="success"
                                 icon="star"
-                                title="Nearest Hospital Rating"
+                                title="Nearest Train Rating"
                                 count={traveltime}
                                 percentage={{
                                     color: "success",
