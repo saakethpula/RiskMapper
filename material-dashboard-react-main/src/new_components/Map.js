@@ -16,7 +16,7 @@ const loadGoogleMapsScript = () => {
         const existingScript = document.getElementById("googleMaps");
         if (!existingScript) {
             const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}`;
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
             script.id = "googleMaps";
             script.async = true;
             script.defer = true;
@@ -35,15 +35,17 @@ const loadGoogleMapsScript = () => {
     });
 };
 
-const Map = ({ mapType }) => {
+const Map = ({ mapType, lat, lng, setLat, setLng }) => {
     const [mapLoaded, setMapLoaded] = useState(false);
     const [locationFound, setLocationFound] = useState(false);
     const [data, setData] = useState(null);
-    const [directionsVisible, setDirectionsVisible] = useState({});
     const [hospitalItems, setHospitalItems] = useState([]);
+    const [directionData, setDirectionData] = useState(null);
+    const [addressInput, setAddressInput] = useState("");
     const mapRef = useRef(null);
     const mapInstanceRef = useRef(null);
     const markerRef = useRef(null);
+    const directionsRendererRef = useRef(null);
 
     useEffect(() => {
         loadGoogleMapsScript()
@@ -60,15 +62,73 @@ const Map = ({ mapType }) => {
         }
     }, [mapLoaded]);
 
-    // Process hospital data into the format required by Invoices component
     useEffect(() => {
-        if (data && data.hospitals) {
-            // Take only the first 5 hospitals
+        if (data && mapType === "hospital") {
             const formattedItems = data.hospitals.slice(0, 5).map((hospital, index) => ({
                 label1: hospital.name,
                 label2: hospital.address,
                 label3: hospital.distance_miles,
-                noGutter: index === 4 // Add noGutter for last item
+                noGutter: index === 4,
+            }));
+            setHospitalItems(formattedItems);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (data && mapType === "fire_stations") {
+            const formattedItems = data.fire_stations.slice(0, 5).map((fire_station, index) => ({
+                label1: fire_station.name,
+                label2: fire_station.address,
+                label3: fire_station.distance_miles,
+                noGutter: index === 4,
+            }));
+            setHospitalItems(formattedItems);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (data && mapType === "public_transportation") {
+            const formattedItems = data.public_transportation.slice(0, 5).map((public_transportation, index) => ({
+                label1: public_transportation.name,
+                label2: public_transportation.address,
+                label3: public_transportation.distance_miles,
+                noGutter: index === 4,
+            }));
+            setHospitalItems(formattedItems);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (data && mapType === "buildings") {
+            const formattedItems = data.buildings.slice(0, 5).map((buildings, index) => ({
+                label1: buildings.name,
+                label2: buildings.address,
+                label3: buildings.distance_miles,
+                noGutter: index === 4,
+            }));
+            setHospitalItems(formattedItems);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (data && mapType === "viewpoints") {
+            const formattedItems = data.viewpoints.slice(0, 5).map((viewpoints, index) => ({
+                label1: viewpoints.name,
+                label2: viewpoints.address,
+                label3: viewpoints.distance_miles,
+                noGutter: index === 4,
+            }));
+            setHospitalItems(formattedItems);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (data && mapType === "subway-station") {
+            const formattedItems = data.subway_station.slice(0, 5).map((subway_station, index) => ({
+                label1: subway_station.name,
+                label2: subway_station.address,
+                label3: subway_station.distance_miles,
+                noGutter: index === 4,
             }));
             setHospitalItems(formattedItems);
         }
@@ -87,28 +147,83 @@ const Map = ({ mapType }) => {
                         mapInstanceRef.current.setCenter(userLocation);
                         mapInstanceRef.current.setZoom(14);
 
-                        // Remove old marker
                         if (markerRef.current) {
                             markerRef.current.setMap(null);
                         }
 
-                        // Create new marker
                         markerRef.current = new google.maps.Marker({
                             position: userLocation,
                             map: mapInstanceRef.current,
                             title: "You are here!",
                         });
+                        setLat(userLocation.lat);
+                        setLng(userLocation.lng);
 
-                        // Fetch hospitals from FastAPI backend
-                        try {
-                            const response = await fetch(
-                                `http://127.0.0.1:8000/hospitals/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
-                            );
-                            const data = await response.json();
-                            setData({ hospitals: data.hospitals });
-                            console.log("Hospitals:", data.hospitals);
-                        } catch (error) {
-                            console.error("Error fetching hospitals:", error);
+                        if (mapType === "hospital") {
+                            try {
+                                const response = await fetch(
+                                    `http://127.0.0.1:8000/hospitals/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                                );
+                                const data = await response.json();
+                                setData({hospitals: data.hospitals});
+                            } catch (error) {
+                                console.error("Error fetching hospitals:", error);
+                            }
+                        }
+                        else if (mapType === "fire_stations") {
+                            try {
+                                const response = await fetch(
+                                    `http://127.0.0.1:8000/fire-stations/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                                );
+                                const data = await response.json();
+                                setData({fire_stations: data.fire_stations});
+                            } catch (error) {
+                                console.error("Error fetching fire_stations:", error);
+                            }
+                        }
+                        else if (mapType === "public_transportation") {
+                            try {
+                                const response = await fetch(
+                                    `http://127.0.0.1:8000/public-transportation/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                                );
+                                const data = await response.json();
+                                setData({public_transportation: data.public_transportation});
+                            } catch (error) {
+                                console.error("Error fetching public_transportation:", error);
+                            }
+                        }
+                        else if (mapType === "buildings") {
+                            try {
+                                const response = await fetch(
+                                    `http://127.0.0.1:8000/buildings/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                                );
+                                const data = await response.json();
+                                setData({buildings: data.buildings});
+                            } catch (error) {
+                                console.error("Error fetching public_transportation:", error);
+                            }
+                        }
+                        else if (mapType === "viewpoints") {
+                            try {
+                                const response = await fetch(
+                                    `http://127.0.0.1:8000/viewpoints/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                                );
+                                const data = await response.json();
+                                setData({viewpoints: data.viewpoints});
+                            } catch (error) {
+                                console.error("Error fetching viewpoints:", error);
+                            }
+                        }
+                        else if (mapType === "subway-station") {
+                            try {
+                                const response = await fetch(
+                                    `http://127.0.0.1:8000/subway-station/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                                );
+                                const data = await response.json();
+                                setData({subway_station: data.subway_station});
+                            } catch (error) {
+                                console.error("Error fetching Public Shelters:", error);
+                            }
                         }
                     }
                 },
@@ -134,7 +249,6 @@ const Map = ({ mapType }) => {
                     );
                     const data = await response.json();
                     setData({ hospitals: data.hospitals });
-                    console.log("Hospitals:", data.hospitals);
                 } catch (error) {
                     console.error("Error fetching hospitals:", error);
                 }
@@ -142,134 +256,217 @@ const Map = ({ mapType }) => {
         }
     };
 
-    const findGasstations = async () => {
-        if (markerRef.current) {
-            const userLocation = markerRef.current.getPosition();
-            if (userLocation) {
-                const lat = userLocation.lat();
-                const lng = userLocation.lng();
+    const handleAddressSearch = async () => {
+        if (!addressInput.trim()) {
+            alert("Please enter an address");
+            return;
+        }
 
-                try {
-                    const response = await fetch(
-                        `http://127.0.0.1:8000/gas-stations/?lat=${lat}&lng=${lng}&radius=10000`
-                    );
-                    const data = await response.json();
-                    setData({ gas_stations: data.gas_stations });
-                    console.log("Gas Stations:", data.gas_stations);
-                } catch (error) {
-                    console.error("Error fetching gas stations:", error);
+        if (mapLoaded && mapInstanceRef.current) {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: addressInput }, async (results, status) => {
+                if (status === google.maps.GeocoderStatus.OK && results[0]) {
+                    const userLocation = {
+                        lat: results[0].geometry.location.lat(),
+                        lng: results[0].geometry.location.lng(),
+                    };
+
+                    mapInstanceRef.current.setCenter(userLocation);
+                    mapInstanceRef.current.setZoom(14);
+
+                    if (markerRef.current) {
+                        markerRef.current.setMap(null);
+                    }
+
+                    markerRef.current = new google.maps.Marker({
+                        position: userLocation,
+                        map: mapInstanceRef.current,
+                        title: "Selected Location",
+                    });
+
+                    setLat(userLocation.lat);
+                    setLng(userLocation.lng);
+
+                    // Fetch data based on map type, similar to locateUser function
+                    if (mapType === "hospital") {
+                        try {
+                            const response = await fetch(
+                                `http://127.0.0.1:8000/hospitals/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                            );
+                            const data = await response.json();
+                            setData({hospitals: data.hospitals});
+                        } catch (error) {
+                            console.error("Error fetching hospitals:", error);
+                        }
+                    }
+                    else if (mapType === "fire_stations") {
+                        try {
+                            const response = await fetch(
+                                `http://127.0.0.1:8000/fire-stations/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                            );
+                            const data = await response.json();
+                            setData({fire_stations: data.fire_stations});
+                        } catch (error) {
+                            console.error("Error fetching fire_stations:", error);
+                        }
+                    }
+                    else if (mapType === "public_transportation") {
+                        try {
+                            const response = await fetch(
+                                `http://127.0.0.1:8000/public-transportation/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                            );
+                            const data = await response.json();
+                            setData({public_transportation: data.public_transportation});
+                        } catch (error) {
+                            console.error("Error fetching public_transportation:", error);
+                        }
+                    }
+                    else if (mapType === "buildings") {
+                        try {
+                            const response = await fetch(
+                                `http://127.0.0.1:8000/buildings/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                            );
+                            const data = await response.json();
+                            setData({buildings: data.buildings});
+                        } catch (error) {
+                            console.error("Error fetching buildings:", error);
+                        }
+                    }
+                    else if (mapType === "viewpoints") {
+                        try {
+                            const response = await fetch(
+                                `http://127.0.0.1:8000/viewpoints/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                            );
+                            const data = await response.json();
+                            setData({viewpoints: data.viewpoints});
+                        } catch (error) {
+                            console.error("Error fetching viewpoints:", error);
+                        }
+                    }
+                    else if (mapType === "subway-station") {
+                        try {
+                            const response = await fetch(
+                                `http://127.0.0.1:8000/subway-station/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                            );
+                            const data = await response.json();
+                            setData({subway_station: data.subway_station});
+                        } catch (error) {
+                            console.error("Error fetching subway stations:", error);
+                        }
+                    }
+                } else {
+                    alert("Could not find the location. Please try a different address.");
                 }
-            }
+            });
         }
     };
 
-    const directionsRenderersRef = useRef({});
-
-    const toggleDirections = (index, hospital) => {
-        setDirectionsVisible((prev) => {
-            const newState = { ...prev, [index]: !prev[index] };
-            if (newState[index]) {
-                if (mapInstanceRef.current && markerRef.current) {
-                    const directionsService = new google.maps.DirectionsService();
-                    const directionsRenderer = new google.maps.DirectionsRenderer({
-                        draggable: true,
-                        panel: document.getElementById(`directionsPanel-${index}`),
-                    });
-                    directionsRenderer.setMap(mapInstanceRef.current);
-    
-                    const origin = markerRef.current?.getPosition();
-                    if (!origin) {
-                        console.error("Origin is not available.");
-                        return prev;
-                    }
-    
-                    const request = {
-                        origin: origin,
-                        destination: hospital.address,
-                        travelMode: google.maps.TravelMode.DRIVING,
-                    };
-    
-                    directionsService.route(request, (result, status) => {
-                        if (status === google.maps.DirectionsStatus.OK) {
-                            directionsRenderer.setDirections(result);
-                            directionsRenderersRef.current[index] = directionsRenderer;
-                        } else {
-                            console.error(`Directions request failed due to ${status}`);
-                        }
-                    });
-                }
-            } else {
-                const panel = document.getElementById(`directionsPanel-${index}`);
-                if (panel) {
-                    panel.innerHTML = "";
-                }
-                if (directionsRenderersRef.current[index]) {
-                    directionsRenderersRef.current[index].setMap(null);
-                    delete directionsRenderersRef.current[index];
-                }
-            }
-            return newState;
-        });
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleAddressSearch();
+        }
     };
+
+    useEffect(() => {
+        if (directionData && mapInstanceRef.current && markerRef.current) {
+            const directionsService = new google.maps.DirectionsService();
+
+            if (directionsRendererRef.current) {
+                directionsRendererRef.current.setMap(null);
+            }
+
+            directionsRendererRef.current = new google.maps.DirectionsRenderer({
+                map: mapInstanceRef.current,
+                panel: document.getElementById("directionsPanel"),
+            });
+
+            const origin = markerRef.current?.getPosition();
+            if (!origin) return;
+
+            const request = {
+                origin: origin,
+                destination: directionData,
+                travelMode: google.maps.TravelMode.DRIVING,
+            };
+
+            directionsService.route(request, (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsRendererRef.current.setDirections(result);
+                } else {
+                    console.error(`Directions request failed due to ${status}`);
+                }
+            });
+        }
+    }, [directionData]);
 
     return (
         <div style={{ display: "flex", justifyContent: "left", textAlign: "center", padding: "20px" }}>
             <div ref={mapRef} style={{ height: "700px", width: "70%" }}></div>
             <div style={{ marginLeft: "20px", width: "30%" }}>
-                <MDButton onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
+                <MDButton onClick={locateUser} style={{ marginTop: "10px", padding: "10px", width: "100%" }}>
                     Find My Location Automatically
                 </MDButton>
 
-                <input
-                    type="text"
-                    placeholder="Enter location manually"
-                    style={{ marginTop: "10px", padding: "10px", width: "100%" }}
-                    onKeyPress={(event) => {
-                        if (event.key === "Enter") {
-                            const geocoder = new google.maps.Geocoder();
-                            geocoder.geocode({ address: event.target.value }, (results, status) => {
-                                if (status === google.maps.GeocoderStatus.OK) {
-                                    const userLocation = results[0].geometry.location;
-                                    if (mapInstanceRef.current) {
-                                        mapInstanceRef.current.setCenter(userLocation);
-                                        mapInstanceRef.current.setZoom(14);
-
-                                        if (markerRef.current) {
-                                            markerRef.current.setMap(null);
-                                        }
-                                        markerRef.current = new google.maps.Marker({
-                                            position: userLocation,
-                                            map: mapInstanceRef.current,
-                                            title: "You are here!",
-                                        });
-
-                                        setLocationFound(true);
-                                    }
-                                } else {
-                                    alert("Geocode was not successful for the following reason: " + status);
-                                }
-                            });
-                        }
-                    }}
-                />
-
-                {locationFound && (
-                    <div style={{ marginTop: "10px" }}>
-                        <MDButton onClick={findHospitals} style={{ marginRight: "10px", padding: "10px" }}>
-                            Find Hospitals
-                        </MDButton>
-                        <MDButton onClick={findGasstations} style={{ padding: "10px" }}>
-                            Find Gas Stations
-                        </MDButton>
-                    </div>
-                )}
+                <div style={{ marginTop: "10px", display: "flex", flexDirection: "column" }}>
+                    <input
+                        type="text"
+                        placeholder="Enter your address"
+                        value={addressInput}
+                        onChange={(e) => setAddressInput(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        style={{
+                            padding: "10px",
+                            marginBottom: "10px",
+                            borderRadius: "4px",
+                            border: "1px solid #ccc"
+                        }}
+                    />
+                    <MDButton onClick={handleAddressSearch} style={{ padding: "10px" }}>
+                        Use This Address
+                    </MDButton>
+                </div>
 
                 <Grid item xs={12} lg={12} style={{ marginTop: "20px" }}>
-                    {hospitalItems.length > 0 && (
-                        <Invoices
-                            title="Nearby Hospitals"
-                            items={hospitalItems}
-                        />
+                    {!directionData ? (
+                        mapType === "hospital" && hospitalItems.length > 0 ? (
+                            <Invoices
+                                title="Nearby Hospitals"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        ) : mapType === "fire_stations" && hospitalItems.length > 0 ? (
+                            <Invoices
+                                title="Nearby Fire Stations"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        ) : mapType === "public_transportation" && hospitalItems.length > 0 ? (
+                            <Invoices
+                                title="Nearby Public Transportation"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        ) : mapType === "buildings" && hospitalItems.length > 0 ? (
+                            <Invoices
+                                title="Nearby Buildings"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        ) : mapType === "viewpoints" && hospitalItems.length > 0 ? (
+                            <Invoices
+                                title="Nearby Viewpoints"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        ) : mapType === "subway-station" && hospitalItems.length > 0 ? (
+                            <Invoices
+                                title="Nearby Subway Station"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        ) : null
+                    ) : (
+                        <div id="directionsPanel" style={{ marginTop: "10px" }} />
                     )}
                 </Grid>
             </div>
@@ -278,7 +475,11 @@ const Map = ({ mapType }) => {
 };
 
 Map.propTypes = {
-    mapType: PropTypes.string.isRequired,
+    mapType: PropTypes.string,
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+    setLat: PropTypes.func,
+    setLng: PropTypes.func,
 };
 
 export default Map;

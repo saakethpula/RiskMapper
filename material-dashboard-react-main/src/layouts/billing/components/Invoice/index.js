@@ -8,7 +8,7 @@ import Icon from "@mui/material/Icon";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-function Invoice({ label1, label2, label3, noGutter }) {
+function Invoice({ label1, label2, label3, noGutter, setDirectionData}) {
   return (
       <MDBox
           component="li"
@@ -32,9 +32,18 @@ function Invoice({ label1, label2, label3, noGutter }) {
             {label3}
           </MDTypography>
           <MDBox display="flex" alignItems="left" lineHeight={1} ml={3} sx={{ cursor: "pointer" }}>
-            <MDTypography variant="button" fontWeight="bold">
-              &nbsp;Select
-            </MDTypography>
+<MDTypography
+  variant="button"
+  fontWeight="bold"
+  onClick={() => {
+    console.log("Clicked label2:", label2); // Log label2
+    setDirectionData(label2); // Call function
+  }}
+>
+  &nbsp;Select
+</MDTypography>
+
+
           </MDBox>
         </MDBox>
       </MDBox>
@@ -50,6 +59,7 @@ Invoice.propTypes = {
   label2: PropTypes.string.isRequired,
   label3: PropTypes.string.isRequired,
   noGutter: PropTypes.bool,
+    setDirectionData: PropTypes.func,
 };
 
 export default Invoice;

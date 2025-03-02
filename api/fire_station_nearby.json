@@ -1,0 +1,142 @@
+[
+    {
+        "name": "Wilmington Fire Marshal",
+        "address": "Louis L.Redding City County Building, 800 North French Street # 3, Wilmington",
+        "distance_miles": "3.4 mi",
+        "contact": "(302) 576-3120",
+        "rating": "N/A"
+    },
+    {
+        "name": "Wilmington Fire Department Headquarters",
+        "address": "22 South Heald Street, Wilmington",
+        "distance_miles": "3.8 mi",
+        "contact": "(302) 576-3150",
+        "rating": 5
+    },
+    {
+        "name": "Wilmington Fire Station #2",
+        "address": "400 New Castle Avenue, Wilmington",
+        "distance_miles": "4.1 mi",
+        "contact": "(302) 571-4594",
+        "rating": 5
+    },
+    {
+        "name": "Wilmington Fire Department",
+        "address": "2200 Tatnall Street, Wilmington",
+        "distance_miles": "4.2 mi",
+        "contact": "(302) 571-4588",
+        "rating": 5
+    },
+    {
+        "name": "Talleyville Fire Company, Station 25",
+        "address": "3919 Concord Pike, Wilmington",
+        "distance_miles": "6.3 mi",
+        "contact": "(302) 478-1110",
+        "rating": 5
+    },
+    {
+        "name": "Wilmington Fire Department - Fire Station",
+        "address": "1806 North Dupont Street, Wilmington",
+        "distance_miles": "2.9 mi",
+        "contact": "(302) 576-3950",
+        "rating": 4
+    },
+    {
+        "name": "Mill Creek Fire Company Station 21",
+        "address": "3808 Kirkwood Highway, Wilmington",
+        "distance_miles": "3.6 mi",
+        "contact": "(302) 998-8911",
+        "rating": 4.7
+    },
+    {
+        "name": "Mill Creek Fire Co Station 2",
+        "address": "4021 Skyline Drive, Wilmington",
+        "distance_miles": "7.0 mi",
+        "contact": "(302) 992-9671",
+        "rating": "N/A"
+    },
+    {
+        "name": "Delaware Air National Guard Fire Dept Sta. 33",
+        "address": "2900 Spruance Drive, New Castle",
+        "distance_miles": "7.1 mi",
+        "contact": "(302) 323-3450",
+        "rating": 4.2
+    },
+    {
+        "name": "Holloway Terrace Fire Company, Station 20",
+        "address": "700 West Avenue, New Castle",
+        "distance_miles": "5.9 mi",
+        "contact": "(302) 654-2817",
+        "rating": 4.4
+    },
+    {
+        "name": "Minquadale Fire Company, Station 22",
+        "address": "129 East Hazeldell Avenue, New Castle",
+        "distance_miles": "5.1 mi",
+        "contact": "(302) 652-0986",
+        "rating": 4.2
+    },
+    {
+        "name": "Minquas Fire Co",
+        "address": "21 North James Street, Newport",
+        "distance_miles": "3.0 mi",
+        "contact": "(302) 998-3474",
+        "rating": 4.4
+    },
+    {
+        "name": "Belvedere Volunteer Fire Co",
+        "address": "1000 Liberty Road, Newport",
+        "distance_miles": "3.6 mi",
+        "contact": "(302) 998-8021",
+        "rating": 4.9
+    },
+    {
+        "name": "Brandywine Hundred Fire Co, Station 11",
+        "address": "1006 Brandywine Boulevard, Wilmington",
+        "distance_miles": "7.7 mi",
+        "contact": "(302) 764-4901",
+        "rating": 4.8
+    },
+    {
+        "name": "Five Points Fire Company, Station 17",
+        "address": "209 South Maryland Avenue, Wilmington",
+        "distance_miles": "1.6 mi",
+        "contact": "(302) 994-2245",
+        "rating": 4.8
+    },
+    {
+        "name": "Wilmington Fire Station #1",
+        "address": "400 West 2nd Street, Wilmington",
+        "distance_miles": "2.6 mi",
+        "contact": "(302) 571-4593",
+        "rating": 3.7
+    },
+    {
+        "name": "Wilmington Fire Station #6",
+        "address": "224 North Union Street, Wilmington",
+        "distance_miles": "1.5 mi",
+        "contact": "(302) 571-4591",
+        "rating": 5
+    },
+    {
+        "name": "Wilmington Fire Department",
+        "address": "804 Maryland Avenue, Wilmington",
+        "distance_miles": "2.3 mi",
+        "contact": "(302) 652-5317",
+        "rating": "N/A"
+    },
+    {
+        "name": "Wilmington Fire Department Marine Unit",
+        "address": "500 Swedes Landing Road, Wilmington",
+        "distance_miles": "3.8 mi",
+        "contact": "(302) 571-4585",
+        "rating": "N/A"
+    },
+    {
+        "name": "Wilmington Fire Department",
+        "address": "333 East 30th Street, Wilmington",
+        "distance_miles": "5.0 mi",
+        "contact": "(302) 571-4589",
+        "rating": "N/A"
+    }
+]

@@ -10,7 +10,7 @@ import MDTypography from "components/MDTypography";
 import Invoice from "layouts/billing/components/Invoice";
 import PropTypes from "prop-types";
 
-function Invoices({ title, items }) {
+function Invoices({ title, items, setDirectionData }) {
     return (
         <Card sx={{ height: "100%" }}>
             <MDBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
@@ -21,7 +21,7 @@ function Invoices({ title, items }) {
             <MDBox p={2}>
                 <MDBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
                     {items.map((item, index) => (
-                        <Invoice key={index} {...item} />
+                        <Invoice key={index} {...item}  setDirectionData={setDirectionData}/>
                     ))}
                 </MDBox>
             </MDBox>
@@ -39,6 +39,7 @@ Invoices.propTypes = {
             noGutter: PropTypes.bool,
         })
     ).isRequired,
+    setDirectionData: PropTypes.func,
 };
 
 export default Invoices;
