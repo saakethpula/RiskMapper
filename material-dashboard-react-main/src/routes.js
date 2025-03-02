@@ -37,10 +37,6 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Billing from "layouts/billing";
-import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
@@ -53,9 +49,9 @@ import Icon from "@mui/material/Icon";
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "Medical Emergency",
     key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
+    icon: <Icon fontSize="small">medical_services</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
   },
@@ -63,7 +59,7 @@ const routes = [
     type: "collapse",
     name: "Wildfire",
     key: "wildfire",
-    icon: <Icon fontSize="small">public</Icon>,
+    icon: <Icon fontSize="small">local_fire_department</Icon>,
     route: "/wildfire",
     component: <Dashboard/>,
   },
@@ -71,7 +67,7 @@ const routes = [
     type: "collapse",
     name: "Hurricane",
     key: "hurricane",
-    icon: <Icon fontSize="small">notifications</Icon>,
+    icon: <Icon fontSize="small">storm</Icon>,
     route: "/hurricane",
     component: <Dashboard/>,
   },
