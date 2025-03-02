@@ -235,7 +235,11 @@ async def generate_disaster_response(disaster_type: str = Query(..., description
 
     try:
         # Dynamic prompt structure
-        prompt = f"Provide a concise evacuation plan for a {disaster_type} with each step on a new line and a list of essential survival items."
+        prompt = (f"Provide a concise evacuation plan for a {disaster_type} and a list of essential survival items."
+                "The response should be formatted as follows:\n"
+                "'Evacuation Plan: [plan]\n\n Essentials: [items]"
+                "Return only the plan and items with no additional text or formatting."
+        )
 
         # Call Gemini AI
         model = genai.GenerativeModel("gemini-2.0-flash")
