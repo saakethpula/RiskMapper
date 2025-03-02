@@ -37,10 +37,11 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Billing from "layouts/billing";
-import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
+import Wildfire from "layouts/wildfire";
+import Hurricane from "layouts/hurricane";
+import Earthquake from "./layouts/earthquake";
+import Nuclear from "./layouts/nuclear_event";
+import Tsunami from "./layouts/tsunami";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
@@ -49,31 +50,32 @@ import { faRadiation, faHouseCrack, faWater } from "@fortawesome/free-solid-svg-
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Medical from "layouts/dashboard";
 
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "Medical Emergency",
     key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
+    icon: <Icon fontSize="small">medical_services</Icon>,
     route: "/dashboard",
-    component: <Dashboard />,
+    component: <Medical />,
   },
   {
     type: "collapse",
     name: "Wildfire",
     key: "wildfire",
-    icon: <Icon fontSize="small">public</Icon>,
+    icon: <Icon fontSize="small">local_fire_department</Icon>,
     route: "/wildfire",
-    component: <Dashboard/>,
+    component: <Wildfire/>,
   },
   {
     type: "collapse",
     name: "Hurricane",
     key: "hurricane",
-    icon: <Icon fontSize="small">notifications</Icon>,
+    icon: <Icon fontSize="small">storm</Icon>,
     route: "/hurricane",
-    component: <Dashboard/>,
+    component: <Hurricane/>,
   },
   {
     type: "collapse",
@@ -81,7 +83,7 @@ const routes = [
     key: "earthquake",
     icon: <FontAwesomeIcon icon={faHouseCrack} size="sm" />,
     route: "/earthquake",
-    component: <Dashboard/>,
+    component: <Earthquake/>,
   },
   {
     type: "collapse",
@@ -89,15 +91,7 @@ const routes = [
     key: "tsunami",
     icon: <FontAwesomeIcon icon={faWater} size="sm" />,
     route: "/tsunami",
-    component: <Dashboard/>,
-  },
-  {
-    type: "collapse",
-    name: "Nuclear Event",
-    key: "nuclear_event",
-    icon: <FontAwesomeIcon icon={faRadiation} size="sm" />,
-    route: "/nuclear_event",
-    component: <Dashboard/>,
+    component: <Tsunami/>,
   },
   {
     type: "collapse",
@@ -106,23 +100,7 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
-  },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignIn />,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
+  }
 ];
 
 export default routes;
