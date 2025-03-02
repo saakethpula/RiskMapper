@@ -36,7 +36,11 @@ function Wildfire() {
   const nearestHospitalDistance = hospitalNearbyData[0].distance_miles;
   const hospitalNearby = hospitalNearbyData.length;
   const traveltime = hospitalNearbyData[0].distance_miles.replace(" mi", "");
+  const userLat = localStorage.getItem("userLat") || "Not available";
+  const userLng = localStorage.getItem("userLng") || "Not available";
 
+ // Replace with actual user longitude
+  let response = fetch(`http://127.0.0.1:8000/disaster-response?disaster_type=hurricane&lat=${userLat}&lng=${userLng}`)
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -104,10 +108,15 @@ function Wildfire() {
         </Grid>
         <MDBox>
           <Grid container spacing={3}>
+
             <Grid item xs={12} md={10} lg={12}>
               <Projects mapState={"hospital"} />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
+              <div> {response[1]} </div>
+              </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+            
             </Grid>
           </Grid>
         </MDBox>
