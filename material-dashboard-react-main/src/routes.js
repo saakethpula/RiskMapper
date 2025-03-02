@@ -44,33 +44,32 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRadiation } from "@fortawesome/free-solid-svg-icons";
+
 // @mui icons
 import Icon from "@mui/material/Icon";
 
 const routes = [
   {
     type: "collapse",
-    name: "Medical Emergency",
+    name: "Dashboard",
     key: "dashboard",
-    icon: <Icon fontSize="small">medical_services</Icon>,
+    icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
-    component: <Dashboard/>,
+    component: <Dashboard />,
   },
   {
     type: "collapse",
-    name: "Natural Disasters",
+    name: "Tables",
     key: "tables",
-    icon: <Icon fontSize="small">public</Icon>,
+    icon: <Icon fontSize="small">table_view</Icon>,
     route: "/tables",
     component: <Tables />,
   },
   {
     type: "collapse",
-    name: "Nuclear War",
+    name: "Billing",
     key: "billing",
-    icon: <FontAwesomeIcon icon={faRadiation} size="sm" />,
+    icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/billing",
     component: <Billing />,
   },
