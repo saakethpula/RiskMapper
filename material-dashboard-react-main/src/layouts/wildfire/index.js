@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
+
 import Card from "@mui/material/Card";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -13,57 +14,42 @@ import Map from "../../new_components/Map";
 function Wildfire() {
     const [hospitalNearbyData, setHospitalNearbyData] = useState([]);
     const [loading, setLoading] = useState(true);
+
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
-    const [data, setData] = useState([]);  
-    const [disasterResponse, setDisasterResponse] = useState(null); // Store API response
+    const [data, setData] = useState([]);  // Initialize as an empty array
+    const risk = localStorage.getItem("riskLevel") || "Not available";
 
     useEffect(() => {
         if (lat && lng) {
             const fetchHospitals = async () => {
                 try {
                     const response = await fetch(
-                        `http://127.0.0.1:8000/hospitals/?lat=${lat}&lng=${lng}&radius=10000`
+                        `http://127.0.0.1:8000/fire-stations/?lat=${lat}&lng=${lng}&radius=10000`
                     );
                     const result = await response.json();
-                    setData(result.hospitals || []);
-                    console.log("Data:", result.hospitals);
+                    setData(result.fire_stations || []);  // Ensure the data is an array
+                    console.log("Data:", result.fire_stations);
                 } catch (error) {
                     console.error("Error fetching hospitals:", error);
                 }
             };
+
             fetchHospitals();
         } else {
+            // If lat and lng are not available, set loading to false
             setLoading(false);
         }
     }, [lat, lng]);
-
-    useEffect(() => {
-        if (lat !== null && lng !== null) {
-            const fetchDisasterResponse = async () => {
-                try {
-                    const response = await fetch(
-                        `http://127.0.0.1:8000/disaster-response?disaster_type=Wildfire&lat=${lat}&lng=${lng}`
-                    );
-                    const result = await response.json();
-                    setDisasterResponse(result["response"]); // Store the relevant data
-                    console.log("Disaster Response:", result["response"]);
-                } catch (error) {
-                    console.error("Error fetching disaster response:", error);
-                }
-            };
-
-            fetchDisasterResponse();
-        }
-    }, [lat, lng]); // Now it waits until lat & lng are available
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    const nearestHospitalDistance = data.length > 0 ? (data[0]?.distance_miles || "N/A") : "N/A";
-    const hospitalNearby = data.length;
-    const travelTime = data.length > 0 ? (data[0]?.distance_miles?.replace(" mi", "") || "N/A") : "N/A";
+    // Ensure safe access
+    const nearestHospitalDistance = data.length > 0 ? data[0]?.distance_miles : "N/A";
+    const hospitalNearby = data.length;  // Length of hospitals array
+    const traveltime = data.length > 0 ? data[0]?.distance_miles.replace(" mi", "") : "N/A";  // Access first hospital
 
     return (
         <DashboardLayout>
@@ -77,11 +63,6 @@ function Wildfire() {
                                 icon="place"
                                 title="Number of Nearby Hospitals"
                                 count={hospitalNearby}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+55%",
-                                    label: "than last week",
-                                }}
                             />
                         </MDBox>
                     </Grid>
@@ -91,11 +72,6 @@ function Wildfire() {
                                 icon="leaderboard"
                                 title="Distance to Nearest Hospital (mi)"
                                 count={nearestHospitalDistance}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+3%",
-                                    label: "than last month",
-                                }}
                             />
                         </MDBox>
                     </Grid>
@@ -105,12 +81,7 @@ function Wildfire() {
                                 color="success"
                                 icon="star"
                                 title="Nearest Hospital Rating"
-                                count={travelTime}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+1%",
-                                    label: "than yesterday",
-                                }}
+                                count={traveltime}
                             />
                         </MDBox>
                     </Grid>
@@ -120,12 +91,7 @@ function Wildfire() {
                                 color="primary"
                                 icon="person_add"
                                 title="Risk Level"
-                                count={hospitalNearby}
-                                percentage={{
-                                    color: "success",
-                                    amount: "",
-                                    label: "Just updated",
-                                }}
+                                count={risk}
                             />
                         </MDBox>
                     </Grid>
@@ -133,27 +99,22 @@ function Wildfire() {
                 <MDBox>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={10} lg={12}>
-                            <Projects mapState={"hospital"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
+                            <Projects mapState={"fire_stations"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
+
                         </Grid>
-                        <MDBox mb={1.5}>
-                          <Grid container spacing={3}>
-                            <Grid item xs={12} md={10} lg={12}>
-                              <Card>                            
-                                {disasterResponse || "Loading disaster response..."}
-                              </Card>
-                            </Grid>
-                          </Grid>
-                        </MDBox> 
+
                     </Grid>
+
                 </MDBox>
+
             </MDBox>
         </DashboardLayout>
     );
 }
 
 Wildfire.propTypes = {
-    lat: PropTypes.number,  
-    lng: PropTypes.number,  
+    lat: PropTypes.number,  // No .isRequired, making it optional
+    lng: PropTypes.number,  // No .isRequired, making it optional
 };
 
 export default Wildfire;

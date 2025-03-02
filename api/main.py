@@ -49,6 +49,11 @@ def store_results_to_json(place_type: str, results: list):
         json.dump(results, f, indent=4)
 
 
+import requests
+
+
+import requests
+
 def get_places(lat: float, lng: float, radius: int, place_type: str):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     params = {
@@ -101,8 +106,15 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
                 "rating": rating,
             }
         )
-    store_results_to_json(place_type, places)
-    return places
+
+    # Sort only the first 5 places by distance (from greatest to least)
+    first_five_sorted = sorted(places[:5], key=lambda x: x["distance_miles"], reverse=False)
+
+    # Append the remaining places (unsorted)
+    places_sorted = first_five_sorted + places[5:]
+
+    store_results_to_json(place_type, places_sorted)
+    return places_sorted
 
 
 @app.get("/gas-stations/")
