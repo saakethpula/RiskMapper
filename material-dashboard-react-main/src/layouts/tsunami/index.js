@@ -104,7 +104,7 @@ function Tsunami() {
             <Grid item xs={12} md={6} lg={3}>
               <MDBox mb={1.5}>
                 <ComplexStatisticsCard
-                  icon="leaderboard"
+                  icon="directions_car"
                   title="Distance to Nearest High Ground (mi)"
                   count={nearestHospitalDistance}
                   titleTypographyProps={{ variant: "body2" }}
@@ -128,7 +128,7 @@ function Tsunami() {
               <MDBox mb={1.5}>
                 <ComplexStatisticsCard
                   color="primary"
-                  icon="person_add"
+                  icon="reportproblem"
                   title="Risk Level"
                   count={riskAssessment}
                   titleTypographyProps={{ variant: "body2" }}
