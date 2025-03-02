@@ -17,16 +17,20 @@ function Overview() {
   const [response, setResponse] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Name:", name);
-    console.log("Age:", age);
-    console.log("Medical History:", medicalHistory);
-    setResponse(fetch('http://127.0.0.1:8000/hospitals-query/?info=' + age + ' ' + medicalHistory)
-      .then(response => response.text())
-      .then(data => setResponse(data))
-      .catch(error => console.error('Error:', error)));
-    console.log(response);
+    fetch(`http://127.0.0.1:8000/hospitals-query/?info=${age} ${medicalHistory}`)
+      .then((response) => response.text())
+      .then((data) => {
+        setResponse(data); // Save in state
+        localStorage.setItem("riskLevel", data); // Save in localStorage
+        const riskLevel = data.match(/\d+/)[0]; // Extract the number from the response
+        setResponse(riskLevel); // Save the number in state
+        localStorage.setItem("riskLevel", riskLevel); // Save the number in localStorage
+        console.log("Risk Level Saved to LocalStorage:", riskLevel);
+      })
+      .catch((error) => console.error("Error:", error));
   };
+  
+
   
 
 
