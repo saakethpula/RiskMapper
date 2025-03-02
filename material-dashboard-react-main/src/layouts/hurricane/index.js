@@ -1,36 +1,12 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
+import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-
-// Data
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-import hospitalNearbyData from "layouts/dashboard/data/hospital_nearby.json";
-
-// Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
+
 function Wildfire() {
   const { sales, tasks } = reportsLineChartData;
   const nearestHospitalDistance = hospitalNearbyData[0].distance_miles;
@@ -125,4 +101,9 @@ function Wildfire() {
   );
 }
 
-export default Wildfire;
+Hurricane.propTypes = {
+    lat: PropTypes.number,  // No .isRequired, making it optional
+    lng: PropTypes.number,  // No .isRequired, making it optional
+};
+
+export default Hurricane;
