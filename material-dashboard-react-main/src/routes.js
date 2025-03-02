@@ -45,42 +45,59 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRadiation } from "@fortawesome/free-solid-svg-icons";
+import { faRadiation, faHouseCrack, faWater } from "@fortawesome/free-solid-svg-icons";
+
 // @mui icons
 import Icon from "@mui/material/Icon";
 
 const routes = [
   {
     type: "collapse",
-    name: "Medical Emergency",
+    name: "Dashboard",
     key: "dashboard",
-    icon: <Icon fontSize="small">medical_services</Icon>,
+    icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
+    component: <Dashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Wildfire",
+    key: "wildfire",
+    icon: <Icon fontSize="small">public</Icon>,
+    route: "/wildfire",
     component: <Dashboard/>,
   },
   {
     type: "collapse",
-    name: "Natural Disasters",
-    key: "tables",
-    icon: <Icon fontSize="small">public</Icon>,
-    route: "/tables",
-    component: <Tables />,
-  },
-  {
-    type: "collapse",
-    name: "Nuclear War",
-    key: "billing",
-    icon: <FontAwesomeIcon icon={faRadiation} size="sm" />,
-    route: "/billing",
-    component: <Billing />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
+    name: "Hurricane",
+    key: "hurricane",
     icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
+    route: "/hurricane",
+    component: <Dashboard/>,
+  },
+  {
+    type: "collapse",
+    name: "Earthquake",
+    key: "earthquake",
+    icon: <FontAwesomeIcon icon={faHouseCrack} size="sm" />,
+    route: "/earthquake",
+    component: <Dashboard/>,
+  },
+  {
+    type: "collapse",
+    name: "Tsunami",
+    key: "tsunami",
+    icon: <FontAwesomeIcon icon={faWater} size="sm" />,
+    route: "/tsunami",
+    component: <Dashboard/>,
+  },
+  {
+    type: "collapse",
+    name: "Nuclear Event",
+    key: "nuclear_event",
+    icon: <FontAwesomeIcon icon={faRadiation} size="sm" />,
+    route: "/nuclear_event",
+    component: <Dashboard/>,
   },
   {
     type: "collapse",

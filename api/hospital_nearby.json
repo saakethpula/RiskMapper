@@ -1,0 +1,44 @@
+[
+    {
+        "name": "Delaware Imaging Network | Middletown",
+        "address": "120 Sandhill Drive # 2, Middletown",
+        "distance_miles": "5.6 mi",
+        "contact": "(302) 449-5400"
+    },
+    {
+        "name": "Health South Rehab hospital",
+        "address": "706 Middletown Odessa Road #692, Middletown",
+        "distance_miles": "7.5 mi",
+        "contact": "(302) 464-3200"
+    },
+    {
+        "name": "Medical Oncology Hematology Consultants \u2013 Middletown",
+        "address": "651 North Broad Street Suite 406, Middletown",
+        "distance_miles": "5.6 mi",
+        "contact": "(302) 366-1200"
+    },
+    {
+        "name": "Aquila Of Delaware Inc.",
+        "address": "2950 Red Lion Road, Bear",
+        "distance_miles": "7.7 mi",
+        "contact": "(302) 999-1106"
+    },
+    {
+        "name": "ChristianaCare Primary Care at Whitehall",
+        "address": "735 Mapleton Avenue Suite 100, Middletown",
+        "distance_miles": "6.1 mi",
+        "contact": "(302) 203-2440"
+    },
+    {
+        "name": "Abuwen Infusion and Healthcare Services LLC",
+        "address": "12 Pennington Street # 100, Middletown",
+        "distance_miles": "6.3 mi",
+        "contact": "(302) 698-8691"
+    },
+    {
+        "name": "Delaware Integrative Healthcare",
+        "address": "Ashley Plaza, 421 East Main Street, Middletown",
+        "distance_miles": "7.7 mi",
+        "contact": "(302) 376-5830"
+    }
+]

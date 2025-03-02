@@ -1,4 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
+import MDButton from "components/MDButton";
+import Grid from "@mui/material/Grid";
+import Invoices from "../layouts/billing/components/Invoices";
+import PropTypes from "prop-types";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -31,11 +35,12 @@ const loadGoogleMapsScript = () => {
     });
 };
 
-const Map = () => {
+const Map = ({ mapType }) => {
     const [mapLoaded, setMapLoaded] = useState(false);
-    const [locationFound, setLocationFound] = useState(false); // To track if the location is found
+    const [locationFound, setLocationFound] = useState(false);
     const [data, setData] = useState(null);
     const [directionsVisible, setDirectionsVisible] = useState({});
+    const [hospitalItems, setHospitalItems] = useState([]);
     const mapRef = useRef(null);
     const mapInstanceRef = useRef(null);
     const markerRef = useRef(null);
@@ -54,6 +59,20 @@ const Map = () => {
             });
         }
     }, [mapLoaded]);
+
+    // Process hospital data into the format required by Invoices component
+    useEffect(() => {
+        if (data && data.hospitals) {
+            // Take only the first 5 hospitals
+            const formattedItems = data.hospitals.slice(0, 5).map((hospital, index) => ({
+                label1: hospital.name,
+                label2: hospital.address,
+                label3: hospital.distance_miles,
+                noGutter: index === 4 // Add noGutter for last item
+            }));
+            setHospitalItems(formattedItems);
+        }
+    }, [data]);
 
     const locateUser = () => {
         if (navigator.geolocation) {
@@ -80,9 +99,21 @@ const Map = () => {
                             title: "You are here!",
                         });
 
-                        // Set locationFound to true after location is successfully found
-                        setLocationFound(true);
+                        // Fetch hospitals from FastAPI backend
+                        try {
+                            const response = await fetch(
+                                `http://127.0.0.1:8000/hospitals/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
+                            );
+                            const data = await response.json();
+                            setData({ hospitals: data.hospitals });
+                            console.log("Hospitals:", data.hospitals);
+                        } catch (error) {
+                            console.error("Error fetching hospitals:", error);
+                        }
                     }
+                },
+                () => {
+                    alert("Error: Could not get location. Please enter your location manually.");
                 }
             );
         } else {
@@ -133,7 +164,7 @@ const Map = () => {
     };
 
     const directionsRenderersRef = useRef({});
-    
+
     const toggleDirections = (index, hospital) => {
         setDirectionsVisible((prev) => {
             const newState = { ...prev, [index]: !prev[index] };
@@ -182,12 +213,12 @@ const Map = () => {
     };
 
     return (
-    <div style={{ display: "flex", justifyContent: "left", textAlign: "center", padding: "20px" }}>
-        <div ref={mapRef} style={{ height: "700px", width: "70%" }}></div>
+        <div style={{ display: "flex", justifyContent: "left", textAlign: "center", padding: "20px" }}>
+            <div ref={mapRef} style={{ height: "700px", width: "70%" }}></div>
             <div style={{ marginLeft: "20px", width: "30%" }}>
-                <button onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
+                <MDButton onClick={locateUser} style={{ marginTop: "10px", padding: "10px" }}>
                     Find My Location Automatically
-                </button>
+                </MDButton>
 
                 <input
                     type="text"
@@ -203,19 +234,15 @@ const Map = () => {
                                         mapInstanceRef.current.setCenter(userLocation);
                                         mapInstanceRef.current.setZoom(14);
 
-                                        // Remove old marker
                                         if (markerRef.current) {
                                             markerRef.current.setMap(null);
                                         }
-
-                                        // Create new marker
                                         markerRef.current = new google.maps.Marker({
                                             position: userLocation,
                                             map: mapInstanceRef.current,
                                             title: "You are here!",
                                         });
 
-                                        // Set locationFound to true after location is successfully found
                                         setLocationFound(true);
                                     }
                                 } else {
@@ -227,67 +254,31 @@ const Map = () => {
                 />
 
                 {locationFound && (
-                    <button
-                        onClick={findHospitals}
-                        style={{ marginTop: "10px", padding: "10px" }}
-                    >
-                        Find Hospitals
-                    </button>
-                )}
-                {locationFound && (
-                    <button
-                        onClick={findGasstations}
-                        style={{ marginTop: "10px", padding: "10px" }}
-                    >
-                        Find Gas Stations
-                    </button>
+                    <div style={{ marginTop: "10px" }}>
+                        <MDButton onClick={findHospitals} style={{ marginRight: "10px", padding: "10px" }}>
+                            Find Hospitals
+                        </MDButton>
+                        <MDButton onClick={findGasstations} style={{ padding: "10px" }}>
+                            Find Gas Stations
+                        </MDButton>
+                    </div>
                 )}
 
-                {data && data.hospitals && (
-                    <div style={{ marginTop: "20px" }}>
-                        <h3>Nearby Hospitals:</h3>
-                        <div>
-                            {data.hospitals.slice(0, 5).map((hospital, index) => (
-                                <li key={index}>
-                                    <strong>{hospital.name}</strong><br />
-                                    {hospital.address}
-                                    {hospital.distance_miles && <><br />{hospital.distance_miles}</>}
-                                    <br />
-                                    <button
-                                        onClick={() => toggleDirections(index, hospital)}
-                                    >
-                                        {directionsVisible[index] ? "Hide Directions" : "Show Directions"}
-                                    </button>
-                                    <div id={`directionsPanel-${index}`} style={{ marginTop: "10px" }}></div>
-                                </li>
-                            ))}
-                        </div>
-                    </div>
-                )}
-                {data && data.gas_stations && (
-                    <div style={{ marginTop: "20px" }}>
-                        <h3>Nearby Gas Stations:</h3>
-                        <div>
-                            {data.gas_stations.slice(0, 5).map((gas_stations, index) => (
-                                <li key={index}>
-                                    <strong>{gas_stations.name}</strong><br />
-                                    {gas_stations.address}
-                                    {gas_stations.distance_miles && <><br />{gas_stations.distance_miles}</>}
-                                    <br />
-                                    <button
-                                        onClick={() => toggleDirections(index, gas_stations)}
-                                    >
-                                        {directionsVisible[index] ? "Hide Directions" : "Show Directions"}
-                                    </button>
-                                    <div id={`directionsPanel-${index}`} style={{ marginTop: "10px" }}></div>
-                                </li>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                <Grid item xs={12} lg={12} style={{ marginTop: "20px" }}>
+                    {hospitalItems.length > 0 && (
+                        <Invoices
+                            title="Nearby Hospitals"
+                            items={hospitalItems}
+                        />
+                    )}
+                </Grid>
             </div>
         </div>
-);
+    );
+};
+
+Map.propTypes = {
+    mapType: PropTypes.string.isRequired,
 };
 
 export default Map;
