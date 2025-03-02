@@ -137,9 +137,13 @@ function Nuclear() {
                         <MDBox mb={1.5}>
                           <Grid container spacing={3}>
                             <Grid item xs={12} md={10} lg={12}>
-                              <Card>                            
-                                {disasterResponse || "Loading disaster response..."}
-                              </Card>
+                              
+                            <Card divsx={{ width: "150px", height: "80px", padding: "4px", fontSize: "0.75rem", display: "inline-block" }}>
+                                  {disasterResponse || "Loading disaster response..."}
+                            </Card>
+
+
+
                             </Grid>
                           </Grid>
                         </MDBox> 

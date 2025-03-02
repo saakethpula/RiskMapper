@@ -14,10 +14,10 @@ import Map from "../../new_components/Map";
 function Wildfire() {
     const [hospitalNearbyData, setHospitalNearbyData] = useState([]);
     const [loading, setLoading] = useState(true);
-
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
-    const [data, setData] = useState([]);  // Initialize as an empty array
+    const [data, setData] = useState([]);  
+    const [disasterResponse, setDisasterResponse] = useState(null); // Store API response
     const risk = localStorage.getItem("riskLevel") || "Not available";
 
     useEffect(() => {
@@ -39,6 +39,24 @@ function Wildfire() {
         } else {
             // If lat and lng are not available, set loading to false
             setLoading(false);
+        }
+    }, [lat, lng]);
+    useEffect(() => {
+        if (lat !== null && lng !== null) {
+            const fetchDisasterResponse = async () => {
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/disaster-response?disaster_type=wildfire&lat=${lat}&lng=${lng}`
+                    );
+                    const result = await response.json();
+                    setDisasterResponse(result["response"]); // Store the relevant data
+                    console.log("Disaster Response:", result["response"]);
+                } catch (error) {
+                    console.error("Error fetching disaster response:", error);
+                }
+            };
+
+            fetchDisasterResponse();
         }
     }, [lat, lng]);
 
@@ -105,6 +123,19 @@ function Wildfire() {
 
                     </Grid>
 
+                </MDBox>
+                <MDBox>
+                    <Grid container spacing={3}>
+                        <MDBox mb={1.5}>
+                          <Grid container spacing={3}>
+                            <Grid item xs={12} md={10} lg={12}>
+                              <Card>                            
+                                {disasterResponse || "Loading disaster response..."}
+                              </Card>
+                            </Grid>
+                          </Grid>
+                        </MDBox> 
+                    </Grid>
                 </MDBox>
 
             </MDBox>
