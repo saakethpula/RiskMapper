@@ -133,13 +133,19 @@ function Hurricane() {
                 <MDBox>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={10} lg={12}>
-                            <Projects mapState={"hospital"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
+                            <Projects mapState={"hospitals"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
                         </Grid>
+                    </Grid>
+                </MDBox>
+                <MDBox>
+                    <Grid container spacing={3}>
                         <MDBox mb={1.5}>
                           <Grid container spacing={3}>
                             <Grid item xs={12} md={10} lg={12}>
-                              <Card>                            
-                                {disasterResponse || "Loading disaster response..."}
+                              <Card style={{marginTop: '40px'}}>
+                                <div style={{ fontSize: 'medium', padding: '15px'}}>
+                                  {disasterResponse || "Loading disaster response..."}
+                                </div>
                               </Card>
                             </Grid>
                           </Grid>
@@ -150,7 +156,6 @@ function Hurricane() {
         </DashboardLayout>
     );
 }
-
 Hurricane.propTypes = {
     lat: PropTypes.number,  // No .isRequired, making it optional
     lng: PropTypes.number,  // No .isRequired, making it optional

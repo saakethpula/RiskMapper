@@ -132,18 +132,20 @@ function Nuclear() {
                 <MDBox>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={10} lg={12}>
-                            <Projects mapState={"hospital"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
+                            <Projects mapState={"hospitals"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
                         </Grid>
+                    </Grid>
+                </MDBox>
+                <MDBox>
+                    <Grid container spacing={3}>
                         <MDBox mb={1.5}>
                           <Grid container spacing={3}>
                             <Grid item xs={12} md={10} lg={12}>
-                              
-                            <Card divsx={{ width: "150px", height: "80px", padding: "4px", fontSize: "0.75rem", display: "inline-block" }}>
+                              <Card style={{marginTop: '40px'}}>
+                                <div style={{ fontSize: 'medium', padding: '15px'}}>
                                   {disasterResponse || "Loading disaster response..."}
-                            </Card>
-
-
-
+                                </div>
+                              </Card>
                             </Grid>
                           </Grid>
                         </MDBox> 

@@ -81,6 +81,7 @@ function Wildfire() {
                                 icon="place"
                                 title="Number of Nearby Hospitals"
                                 count={hospitalNearby}
+                                fontSize="small"
                             />
                         </MDBox>
                     </Grid>
@@ -90,6 +91,7 @@ function Wildfire() {
                                 icon="leaderboard"
                                 title="Distance to Nearest Hospital (mi)"
                                 count={nearestHospitalDistance}
+                                fontSize="small"
                             />
                         </MDBox>
                     </Grid>
@@ -100,6 +102,7 @@ function Wildfire() {
                                 icon="star"
                                 title="Nearest Hospital Rating"
                                 count={traveltime}
+                                fontSize="small"
                             />
                         </MDBox>
                     </Grid>
@@ -110,6 +113,7 @@ function Wildfire() {
                                 icon="person_add"
                                 title="Risk Level"
                                 count={risk}
+                                fontSize="small"
                             />
                         </MDBox>
                     </Grid>
@@ -118,26 +122,24 @@ function Wildfire() {
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={10} lg={12}>
                             <Projects mapState={"fire_stations"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
-
                         </Grid>
-
                     </Grid>
-
                 </MDBox>
                 <MDBox>
                     <Grid container spacing={3}>
                         <MDBox mb={1.5}>
                           <Grid container spacing={3}>
                             <Grid item xs={12} md={10} lg={12}>
-                              <Card>                            
-                                {disasterResponse || "Loading disaster response..."}
+                              <Card style={{marginTop: '40px'}}>
+                                <div style={{ fontSize: 'medium', padding: '15px'}}>
+                                  {disasterResponse || "Loading disaster response..."}
+                                </div>
                               </Card>
                             </Grid>
                           </Grid>
                         </MDBox> 
                     </Grid>
                 </MDBox>
-
             </MDBox>
         </DashboardLayout>
     );
