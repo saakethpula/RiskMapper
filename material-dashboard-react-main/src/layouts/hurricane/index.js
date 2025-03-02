@@ -23,11 +23,11 @@ function Hurricane() {
             const fetchHospitals = async () => {
                 try {
                     const response = await fetch(
-                        `http://127.0.0.1:8000/hospitals/?lat=${lat}&lng=${lng}&radius=10000`
+                        `http://127.0.0.1:8000/public-transportation/?lat=${lat}&lng=${lng}&radius=10000`
                     );
                     const result = await response.json();
-                    setData(result.hospitals || []);
-                    console.log("Data:", result.hospitals);
+                    setData(result.public_transportation || []);
+                    console.log("Data:", result.public_transportation);
                 } catch (error) {
                     console.error("Error fetching hospitals:", error);
                 }
@@ -133,7 +133,7 @@ function Hurricane() {
                 <MDBox>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={10} lg={12}>
-                            <Projects mapState={"hospital"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
+                            <Projects mapState={"public_transportation"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
                         </Grid>
                         <MDBox mb={1.5}>
                           <Grid container spacing={3}>

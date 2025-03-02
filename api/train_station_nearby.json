@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Newark",
+        "address": "10 Mopar Drive, Newark",
+        "distance_miles": "2.9 mi",
+        "contact": "(800) 872-7245",
+        "rating": 3.1
+    },
+    {
+        "name": "Churchman's Crossing",
+        "address": "United States",
+        "distance_miles": "5.9 mi",
+        "contact": "N/A",
+        "rating": 4.5
+    }
+]

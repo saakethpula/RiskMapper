@@ -1,79 +1,93 @@
 [
     {
-        "name": "Aetna Hose Hook and Ladder",
-        "address": "400 Ogletown Road, Newark",
-        "distance_miles": "1.1 mi",
-        "contact": "(302) 454-3305",
+        "name": "Aetna Hose Hook & Ladder Co, Station 9",
+        "address": "31 Academy Street, Newark",
+        "distance_miles": "0.3 mi",
+        "contact": "(302) 454-3300",
         "rating": 5
     },
     {
-        "name": "Aetna Hose Hook & Ladder Co, Station 9",
-        "address": "31 Academy Street, Newark",
-        "distance_miles": "456 ft",
-        "contact": "(302) 454-3300",
+        "name": "Aetna Hose Hook and Ladder",
+        "address": "400 Ogletown Road, Newark",
+        "distance_miles": "1.3 mi",
+        "contact": "(302) 454-3305",
         "rating": 5
     },
     {
         "name": "West Grove Fire Company, London Britain Station",
         "address": "1675 New London Road, Landenberg",
-        "distance_miles": "5.7 mi",
+        "distance_miles": "5.9 mi",
         "contact": "(610) 869-9326",
         "rating": 4.3
     },
     {
         "name": "Christiana Fire Company Station 12",
         "address": "2 East Main Street, Christiana",
-        "distance_miles": "5.8 mi",
+        "distance_miles": "6.0 mi",
         "contact": "(302) 737-2433",
         "rating": 4.9
     },
     {
         "name": "Mill Creek Fire Co Station 2",
         "address": "4021 Skyline Drive, Wilmington",
-        "distance_miles": "7.4 mi",
+        "distance_miles": "7.6 mi",
         "contact": "(302) 992-9671",
         "rating": "N/A"
     },
     {
         "name": "Aetna Hose, Hook and Ladder Co Station 7",
         "address": "7 Thorn Lane, Newark",
-        "distance_miles": "1.6 mi",
+        "distance_miles": "1.7 mi",
         "contact": "(302) 454-3307",
+        "rating": 4.5
+    },
+    {
+        "name": "Singerly Fire Company",
+        "address": "300 Newark Avenue, Elkton",
+        "distance_miles": "6.9 mi",
+        "contact": "(410) 398-2078",
         "rating": 4.5
     },
     {
         "name": "Christiana Fire Company Station 3",
         "address": "600 Salem Church Road, Newark",
-        "distance_miles": "5.8 mi",
+        "distance_miles": "6.0 mi",
         "contact": "(302) 738-2433",
         "rating": 3
     },
     {
         "name": "Moran F E",
         "address": "301 Ruthar Drive # B, Newark",
-        "distance_miles": "4.1 mi",
+        "distance_miles": "4.2 mi",
         "contact": "(302) 453-9237",
-        "rating": "N/A"
-    },
-    {
-        "name": "WEST GROVE FIRE CO. STATION 32",
-        "address": "1517 New London Road, Landenberg",
-        "distance_miles": "5.7 mi",
-        "contact": "(610) 869-9326",
         "rating": "N/A"
     },
     {
         "name": "MD-Cecil County EMS",
         "address": "107 Chesapeake Boulevard #108, Elkton",
-        "distance_miles": "7.9 mi",
+        "distance_miles": "8.0 mi",
         "contact": "(410) 996-5350",
         "rating": 4
     },
     {
+        "name": "WEST GROVE FIRE CO. STATION 32",
+        "address": "1517 New London Road, Landenberg",
+        "distance_miles": "5.9 mi",
+        "contact": "(610) 869-9326",
+        "rating": "N/A"
+    },
+    {
         "name": "ccdes",
         "address": "107 Chesapeake Boulevard #108, Elkton",
-        "distance_miles": "8.0 mi",
+        "distance_miles": "8.1 mi",
         "contact": "(410) 392-2006",
+        "rating": "N/A"
+    },
+    {
+        "name": "Singerly Fire Company Station 14",
+        "address": "3074 Singerly Road, Elkton",
+        "distance_miles": "7.6 mi",
+        "contact": "N/A",
         "rating": "N/A"
     }
 ]

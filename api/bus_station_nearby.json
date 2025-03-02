@@ -1,0 +1,107 @@
+[
+    {
+        "name": "East Bound Inc",
+        "address": "54 East Main Street, Newark",
+        "distance_miles": "0.4 mi",
+        "contact": "(302) 738-7499",
+        "rating": "N/A"
+    },
+    {
+        "name": "Newark Rail Station",
+        "address": "United States",
+        "distance_miles": "1.1 mi",
+        "contact": "N/A",
+        "rating": 3.8
+    },
+    {
+        "name": "Chestnut Hill Rd @ CH Plaz Shop Ctr",
+        "address": "United States",
+        "distance_miles": "3.0 mi",
+        "contact": "N/A",
+        "rating": 4
+    },
+    {
+        "name": "Chestnut Hill Rd @ Marrows Rd",
+        "address": "United States",
+        "distance_miles": "3.1 mi",
+        "contact": "N/A",
+        "rating": 5
+    },
+    {
+        "name": "Chestnut Hill Rd @ Chestnut Crossing Dr",
+        "address": "United States",
+        "distance_miles": "3.5 mi",
+        "contact": "N/A",
+        "rating": "N/A"
+    },
+    {
+        "name": "Polly Drummond Shopping Center",
+        "address": "United States",
+        "distance_miles": "4.9 mi",
+        "contact": "N/A",
+        "rating": "N/A"
+    },
+    {
+        "name": "De 4 @ Harmony Rd",
+        "address": "United States",
+        "distance_miles": "4.8 mi",
+        "contact": "N/A",
+        "rating": "N/A"
+    },
+    {
+        "name": "Lawrence Dr @ Chapman Rd",
+        "address": "United States",
+        "distance_miles": "5.5 mi",
+        "contact": "N/A",
+        "rating": "N/A"
+    },
+    {
+        "name": "Fairplay Station",
+        "address": "United States",
+        "distance_miles": "5.8 mi",
+        "contact": "N/A",
+        "rating": "N/A"
+    },
+    {
+        "name": "Delaware Park @ Stables",
+        "address": "United States",
+        "distance_miles": "7.2 mi",
+        "contact": "N/A",
+        "rating": "N/A"
+    },
+    {
+        "name": "Christiana Rd @ Opp 273/7 P&R",
+        "address": "United States",
+        "distance_miles": "7.8 mi",
+        "contact": "N/A",
+        "rating": "N/A"
+    },
+    {
+        "name": "Peoples Plaza Park & Ride",
+        "address": "United States",
+        "distance_miles": "5.9 mi",
+        "contact": "N/A",
+        "rating": 4
+    },
+    {
+        "name": "Kirkwood Hwy @ St James CH Rd",
+        "address": "United States",
+        "distance_miles": "6.0 mi",
+        "contact": "N/A",
+        "rating": 3
+    },
+    {
+        "name": "200 Chesapeake Blvd",
+        "address": "United States",
+        "distance_miles": "8.3 mi",
+        "contact": "N/A",
+        "rating": "N/A"
+    },
+    {
+        "name": "Christiana Rd & Airport Rd",
+        "address": "United States",
+        "distance_miles": "8.4 mi",
+        "contact": "N/A",
+        "rating": "N/A"
+    }
+]
