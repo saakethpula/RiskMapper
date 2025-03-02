@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
-
-
 const loadGoogleMapsScript = () => {
     return new Promise((resolve, reject) => {
         if (window.google && window.google.maps) {
@@ -37,18 +35,16 @@ const loadGoogleMapsScript = () => {
     });
 };
 
-
-const Map = ({ mapType, lat , lng, setLat, setLng }) => {
-
-
+const Map = ({ mapType, lat, lng, setLat, setLng }) => {
     const [mapLoaded, setMapLoaded] = useState(false);
     const [locationFound, setLocationFound] = useState(false);
     const [data, setData] = useState(null);
-    const [directionsVisible, setDirectionsVisible] = useState({});
     const [hospitalItems, setHospitalItems] = useState([]);
+    const [directionData, setDirectionData] = useState(null);
     const mapRef = useRef(null);
     const mapInstanceRef = useRef(null);
     const markerRef = useRef(null);
+    const directionsRendererRef = useRef(null);
 
     useEffect(() => {
         loadGoogleMapsScript()
@@ -65,15 +61,13 @@ const Map = ({ mapType, lat , lng, setLat, setLng }) => {
         }
     }, [mapLoaded]);
 
-    // Process hospital data into the format required by Invoices component
     useEffect(() => {
         if (data && data.hospitals) {
-            // Take only the first 5 hospitals
             const formattedItems = data.hospitals.slice(0, 5).map((hospital, index) => ({
                 label1: hospital.name,
                 label2: hospital.address,
                 label3: hospital.distance_miles,
-                noGutter: index === 4 // Add noGutter for last item
+                noGutter: index === 4,
             }));
             setHospitalItems(formattedItems);
         }
@@ -92,12 +86,10 @@ const Map = ({ mapType, lat , lng, setLat, setLng }) => {
                         mapInstanceRef.current.setCenter(userLocation);
                         mapInstanceRef.current.setZoom(14);
 
-                        // Remove old marker
                         if (markerRef.current) {
                             markerRef.current.setMap(null);
                         }
 
-                        // Create new marker
                         markerRef.current = new google.maps.Marker({
                             position: userLocation,
                             map: mapInstanceRef.current,
@@ -106,14 +98,12 @@ const Map = ({ mapType, lat , lng, setLat, setLng }) => {
                         setLat(userLocation.lat);
                         setLng(userLocation.lng);
 
-                        // Fetch hospitals from FastAPI backend
                         try {
                             const response = await fetch(
                                 `http://127.0.0.1:8000/hospitals/?lat=${userLocation.lat}&lng=${userLocation.lng}&radius=10000`
                             );
                             const data = await response.json();
                             setData({ hospitals: data.hospitals });
-                            console.log("Hospitals:", data.hospitals);
                         } catch (error) {
                             console.error("Error fetching hospitals:", error);
                         }
@@ -141,7 +131,6 @@ const Map = ({ mapType, lat , lng, setLat, setLng }) => {
                     );
                     const data = await response.json();
                     setData({ hospitals: data.hospitals });
-                    console.log("Hospitals:", data.hospitals);
                 } catch (error) {
                     console.error("Error fetching hospitals:", error);
                 }
@@ -149,75 +138,37 @@ const Map = ({ mapType, lat , lng, setLat, setLng }) => {
         }
     };
 
-    const findGasstations = async () => {
-        if (markerRef.current) {
-            const userLocation = markerRef.current.getPosition();
-            if (userLocation) {
-                const lat = userLocation.lat();
-                const lng = userLocation.lng();
+    useEffect(() => {
+        if (directionData && mapInstanceRef.current && markerRef.current) {
+            const directionsService = new google.maps.DirectionsService();
 
-                try {
-                    const response = await fetch(
-                        `http://127.0.0.1:8000/gas-stations/?lat=${lat}&lng=${lng}&radius=10000`
-                    );
-                    const data = await response.json();
-                    setData({ gas_stations: data.gas_stations });
-                    console.log("Gas Stations:", data.gas_stations);
-                } catch (error) {
-                    console.error("Error fetching gas stations:", error);
-                }
+            if (directionsRendererRef.current) {
+                directionsRendererRef.current.setMap(null);
             }
+
+            directionsRendererRef.current = new google.maps.DirectionsRenderer({
+                map: mapInstanceRef.current,
+                panel: document.getElementById("directionsPanel"),
+            });
+
+            const origin = markerRef.current?.getPosition();
+            if (!origin) return;
+
+            const request = {
+                origin: origin,
+                destination: directionData,
+                travelMode: google.maps.TravelMode.DRIVING,
+            };
+
+            directionsService.route(request, (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsRendererRef.current.setDirections(result);
+                } else {
+                    console.error(`Directions request failed due to ${status}`);
+                }
+            });
         }
-    };
-
-    const directionsRenderersRef = useRef({});
-
-    const toggleDirections = (index, hospital) => {
-        setDirectionsVisible((prev) => {
-            const newState = { ...prev, [index]: !prev[index] };
-            if (newState[index]) {
-                if (mapInstanceRef.current && markerRef.current) {
-                    const directionsService = new google.maps.DirectionsService();
-                    const directionsRenderer = new google.maps.DirectionsRenderer({
-                        draggable: true,
-                        panel: document.getElementById(`directionsPanel-${index}`),
-                    });
-                    directionsRenderer.setMap(mapInstanceRef.current);
-    
-                    const origin = markerRef.current?.getPosition();
-                    if (!origin) {
-                        console.error("Origin is not available.");
-                        return prev;
-                    }
-    
-                    const request = {
-                        origin: origin,
-                        destination: hospital.address,
-                        travelMode: google.maps.TravelMode.DRIVING,
-                    };
-    
-                    directionsService.route(request, (result, status) => {
-                        if (status === google.maps.DirectionsStatus.OK) {
-                            directionsRenderer.setDirections(result);
-                            directionsRenderersRef.current[index] = directionsRenderer;
-                        } else {
-                            console.error(`Directions request failed due to ${status}`);
-                        }
-                    });
-                }
-            } else {
-                const panel = document.getElementById(`directionsPanel-${index}`);
-                if (panel) {
-                    panel.innerHTML = "";
-                }
-                if (directionsRenderersRef.current[index]) {
-                    directionsRenderersRef.current[index].setMap(null);
-                    delete directionsRenderersRef.current[index];
-                }
-            }
-            return newState;
-        });
-    };
+    }, [directionData]);
 
     return (
         <div style={{ display: "flex", justifyContent: "left", textAlign: "center", padding: "20px" }}>
@@ -227,56 +178,25 @@ const Map = ({ mapType, lat , lng, setLat, setLng }) => {
                     Find My Location Automatically
                 </MDButton>
 
-                <input
-                    type="text"
-                    placeholder="Enter location manually"
-                    style={{ marginTop: "10px", padding: "10px", width: "100%" }}
-                    onKeyPress={(event) => {
-                        if (event.key === "Enter") {
-                            const geocoder = new google.maps.Geocoder();
-                            geocoder.geocode({ address: event.target.value }, (results, status) => {
-                                if (status === google.maps.GeocoderStatus.OK) {
-                                    const userLocation = results[0].geometry.location;
-                                    if (mapInstanceRef.current) {
-                                        mapInstanceRef.current.setCenter(userLocation);
-                                        mapInstanceRef.current.setZoom(14);
-
-                                        if (markerRef.current) {
-                                            markerRef.current.setMap(null);
-                                        }
-                                        markerRef.current = new google.maps.Marker({
-                                            position: userLocation,
-                                            map: mapInstanceRef.current,
-                                            title: "You are here!",
-                                        });
-
-                                        setLocationFound(true);
-                                    }
-                                } else {
-                                    alert("Geocode was not successful for the following reason: " + status);
-                                }
-                            });
-                        }
-                    }}
-                />
-
                 {locationFound && (
                     <div style={{ marginTop: "10px" }}>
                         <MDButton onClick={findHospitals} style={{ marginRight: "10px", padding: "10px" }}>
                             Find Hospitals
                         </MDButton>
-                        <MDButton onClick={findGasstations} style={{ padding: "10px" }}>
-                            Find Gas Stations
-                        </MDButton>
                     </div>
                 )}
 
                 <Grid item xs={12} lg={12} style={{ marginTop: "20px" }}>
-                    {hospitalItems.length > 0 && (
-                        <Invoices
-                            title="Nearby Hospitals"
-                            items={hospitalItems}
-                        />
+                    {!directionData ? (
+                        hospitalItems.length > 0 && (
+                            <Invoices
+                                title="Nearby Hospitals"
+                                items={hospitalItems}
+                                setDirectionData={setDirectionData}
+                            />
+                        )
+                    ) : (
+                        <div id="directionsPanel" style={{ marginTop: "10px" }} />
                     )}
                 </Grid>
             </div>

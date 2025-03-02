@@ -117,9 +117,13 @@ function Medical() {
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={10} lg={12}>
                             <Projects mapState={"hospital"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
+
                         </Grid>
+
                     </Grid>
+
                 </MDBox>
+
             </MDBox>
         </DashboardLayout>
     );
