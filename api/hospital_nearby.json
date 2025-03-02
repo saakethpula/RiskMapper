@@ -1,142 +1,142 @@
 [
     {
-        "name": "Exceptional Care for Children",
-        "address": "11 Independence Way, Newark",
-        "distance_miles": "3.0 mi",
-        "contact": "(302) 894-1001",
-        "rating": 5
+        "name": "Wilmington VA Medical Center",
+        "address": "1601 Kirkwood Highway, Wilmington",
+        "distance_miles": "1.4 mi",
+        "contact": "(302) 994-2511",
+        "rating": 3.9
     },
     {
-        "name": "Delaware Imaging Network | Polly Drummond",
-        "address": "40 Polly Drummond Hill Road Bldg. 4, Newark",
+        "name": "VA Medical Center- Wilmington",
+        "address": "1601 Kirkwood Highway, Wilmington",
+        "distance_miles": "1.6 mi",
+        "contact": "(302) 994-2511",
+        "rating": 4.3
+    },
+    {
+        "name": "Saint Francis Hospital",
+        "address": "701 North Clayton Street, Wilmington",
+        "distance_miles": "2.1 mi",
+        "contact": "(302) 421-4100",
+        "rating": 2.7
+    },
+    {
+        "name": "Planned Parenthood - Wilmington Center",
+        "address": "625 North Shipley Street, Wilmington",
         "distance_miles": "3.1 mi",
-        "contact": "(302) 737-5990",
-        "rating": 4.8
+        "contact": "(302) 655-7293",
+        "rating": 3.3
     },
     {
-        "name": "ChristianaCare Christiana Hospital",
-        "address": "4755 Ogletown-Stanton Road, Newark",
-        "distance_miles": "5.5 mi",
-        "contact": "(302) 733-1000",
-        "rating": 2.3
+        "name": "Nemours Children's Hospital, Delaware",
+        "address": "1600 Rockland Road, Wilmington",
+        "distance_miles": "4.7 mi",
+        "contact": "(302) 651-4200",
+        "rating": 4.2
     },
     {
         "name": "ChristianaCare Center for Heart and Vascular Health",
         "address": "4755 Ogletown-Stanton Road, Newark",
-        "distance_miles": "6.1 mi",
+        "distance_miles": "8.7 mi",
         "contact": "(302) 733-1000",
         "rating": 4.1
     },
     {
-        "name": "Delaware Imaging Network | Glasgow",
-        "address": "2600 Glasgow Avenue #122, Newark",
-        "distance_miles": "6.3 mi",
-        "contact": "(302) 832-5590",
-        "rating": 4.8
+        "name": "Brandywine Hundred Family Medicine",
+        "address": "3521 Silverside Road, Wilmington",
+        "distance_miles": "6.7 mi",
+        "contact": "(302) 478-5650",
+        "rating": "N/A"
     },
     {
-        "name": "Becks Woods Medical Center",
-        "address": "100 Becks Woods Drive, Bear",
-        "distance_miles": "7.4 mi",
-        "contact": "(302) 836-8200",
+        "name": "Wilmington VA Vet Center",
+        "address": "2710 Centerville Road #103, Wilmington",
+        "distance_miles": "2.8 mi",
+        "contact": "(302) 994-1660",
         "rating": 3.7
     },
     {
-        "name": "Brandywine Center Llc",
-        "address": "Drummond Plz Ofc Park, Newark",
-        "distance_miles": "0.6 mi",
-        "contact": "(302) 454-7650",
-        "rating": "N/A"
+        "name": "Foulkstone Medical Pavillion",
+        "address": "1401 Foulk Road, Wilmington",
+        "distance_miles": "7.0 mi",
+        "contact": "(302) 478-7311",
+        "rating": 4
     },
     {
-        "name": "Dr. Molly T. Sandrian",
-        "address": "27 Marrows Road, Newark",
-        "distance_miles": "2.9 mi",
-        "contact": "(302) 455-0900",
-        "rating": 4.7
-    },
-    {
-        "name": "ChristianaCare Ambulatory Infusion Center",
-        "address": "4755 Ogletown-Stanton Road Room 1580, Newark",
-        "distance_miles": "5.4 mi",
-        "contact": "(302) 733-1548",
-        "rating": 2.6
-    },
-    {
-        "name": "Christiana care II",
-        "address": "Hygeia Drive, Newark",
-        "distance_miles": "5.6 mi",
-        "contact": "N/A",
-        "rating": "N/A"
-    },
-    {
-        "name": "CHRIAS: Christiana Hospital Office",
+        "name": "ChristianaCare Christiana Hospital",
         "address": "4755 Ogletown-Stanton Road, Newark",
-        "distance_miles": "5.5 mi",
-        "contact": "(302) 892-9900",
-        "rating": 3.3
-    },
-    {
-        "name": "ChristianaCare Christiana Hospital Emergency Department",
-        "address": "4755 Ogletown-Stanton Road, Newark",
-        "distance_miles": "6.1 mi",
+        "distance_miles": "8.9 mi",
         "contact": "(302) 733-1000",
-        "rating": 1.7
+        "rating": 2.3
     },
     {
-        "name": "SMILE for Humanity",
-        "address": "158 Darling Street, Newark",
-        "distance_miles": "7.2 mi",
-        "contact": "(302) 367-5915",
+        "name": "Family Medicine At Greenhill",
+        "address": "213 Greenhill Avenue Suite B, Wilmington",
+        "distance_miles": "1.1 mi",
+        "contact": "(302) 429-5870",
+        "rating": 2.7
+    },
+    {
+        "name": "Nationwide Healthcare Services",
+        "address": "801 North Broom Street, Wilmington",
+        "distance_miles": "2.5 mi",
+        "contact": "(302) 654-8400",
         "rating": "N/A"
     },
     {
-        "name": "First State Pediatrics",
-        "address": "210 Christiana Medical Center, Newark",
-        "distance_miles": "6.4 mi",
-        "contact": "(302) 368-2501",
-        "rating": 4.1
-    },
-    {
-        "name": "Gastroenterology Associates of Delaware: Lobis Ira F MD",
-        "address": "4745 Ogletown-Stanton Road, Newark",
-        "distance_miles": "5.5 mi",
-        "contact": "(302) 738-5300",
-        "rating": "N/A"
-    },
-    {
-        "name": "Delaware Advanced Vein Center",
-        "address": "40 Omega Drive Bldg G, Newark",
-        "distance_miles": "5.6 mi",
-        "contact": "(302) 731-0001",
-        "rating": 4.7
-    },
-    {
-        "name": "Health South Rehab Center New",
-        "address": "314 East Main Street, Newark",
-        "distance_miles": "1.4 mi",
+        "name": "Highmark Delaware",
+        "address": "800 Delaware Avenue, Wilmington",
+        "distance_miles": "3.1 mi",
         "contact": "N/A",
         "rating": "N/A"
     },
     {
-        "name": "Tree of Life Herbal & Naturopathic Hospital and Trauma Centers LLC",
-        "address": "40 East Main Street, Newark",
-        "distance_miles": "0.5 mi",
-        "contact": "0866 516 0664",
+        "name": "Haile Nancy A",
+        "address": "500 Delaware Avenue, Wilmington",
+        "distance_miles": "3.4 mi",
+        "contact": "(302) 654-9011",
+        "rating": "N/A"
+    },
+    {
+        "name": "CHRIAS: Wilmington Hospital Office",
+        "address": "501 West 14th Street, Wilmington",
+        "distance_miles": "4.1 mi",
+        "contact": "(302) 892-9900",
         "rating": 5
     },
     {
-        "name": "Laurel Hall",
-        "address": "282 The Green, Newark",
-        "distance_miles": "0.9 mi",
+        "name": "Wilmington Hospital Health Center Ped",
+        "address": "501 West 14th Street, Wilmington",
+        "distance_miles": "4.1 mi",
+        "contact": "(302) 320-4412",
+        "rating": 5
+    },
+    {
+        "name": "ChristianaCare Adult Cystic Fibrosis Program",
+        "address": "501 West 14th Street, Wilmington",
+        "distance_miles": "4.1 mi",
+        "contact": "(302) 623-2610",
+        "rating": "N/A"
+    },
+    {
+        "name": "BWMedMD",
+        "address": "1201 North Market Street Suite 111, Wilmington",
+        "distance_miles": "3.6 mi",
+        "contact": "(302) 401-0606",
+        "rating": 5
+    },
+    {
+        "name": "Nemours Alfred I. duPont Hospital for Children",
+        "address": "1600 Rockland Road, Wilmington",
+        "distance_miles": "4.7 mi",
+        "contact": "(302) 651-4000",
+        "rating": 4.8
+    },
+    {
+        "name": "FMC Dialysis",
+        "address": "4000 Washington Street, Wilmington",
+        "distance_miles": "7.4 mi",
         "contact": "N/A",
         "rating": 5
-    },
-    {
-        "name": "Fresh Delaware",
-        "address": "800 Ogletown Road, Newark",
-        "distance_miles": "1.7 mi",
-        "contact": "(302) 608-9595",
-        "rating": 4.2
     }
 ]
