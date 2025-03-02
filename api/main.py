@@ -215,7 +215,7 @@ async def get_risk_assessment(lat: float, lng: float):
         raise HTTPException(status_code=500, detail=f"Error generating risk assessment: {str(e)}")
 
 @app.get("/disaster-response")
-async def generate_disaster_response(disaster_type: str):
+async def generate_disaster_response(disaster_type: str, lat: float, lng: float):
 
     # Normalize input (convert to lowercase and remove leading/trailing spaces)
     disaster_type = disaster_type.strip().lower()
@@ -230,9 +230,9 @@ async def generate_disaster_response(disaster_type: str):
 
     try:
         # Dynamic prompt structure
-        prompt = (f"Provide a concise evacuation plan for a {disaster_type} and a list of essential survival items."
+        prompt = (f"Provide a concise evacuation plan for a {disaster_type} at ({lat}, {lng}) and a list of essential survival items."
                 "The response should be formatted as follows:\n"
-                "'Evacuation Plan: [plan]\n\n Essentials: [items]"
+                "Evacuation Plan: [plan]\n\n Essentials: [items]\n\n Where To Go: [location]" 
                 "Return only the plan and items with no additional text or formatting."
         )
 
