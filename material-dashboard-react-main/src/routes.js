@@ -37,6 +37,11 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
+import Wildfire from "layouts/wildfire";
+import Hurricane from "layouts/hurricane";
+import Earthquake from "./layouts/earthquake";
+import Nuclear from "./layouts/nuclear_event";
+import Tsunami from "./layouts/tsunami";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
@@ -45,6 +50,7 @@ import { faRadiation, faHouseCrack, faWater } from "@fortawesome/free-solid-svg-
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Medical from "layouts/dashboard";
 
 const routes = [
   {
@@ -53,7 +59,7 @@ const routes = [
     key: "dashboard",
     icon: <Icon fontSize="small">medical_services</Icon>,
     route: "/dashboard",
-    component: <Dashboard />,
+    component: <Medical />,
   },
   {
     type: "collapse",
@@ -61,7 +67,7 @@ const routes = [
     key: "wildfire",
     icon: <Icon fontSize="small">local_fire_department</Icon>,
     route: "/wildfire",
-    component: <Dashboard/>,
+    component: <Wildfire/>,
   },
   {
     type: "collapse",
@@ -69,7 +75,7 @@ const routes = [
     key: "hurricane",
     icon: <Icon fontSize="small">storm</Icon>,
     route: "/hurricane",
-    component: <Dashboard/>,
+    component: <Hurricane/>,
   },
   {
     type: "collapse",
@@ -77,7 +83,7 @@ const routes = [
     key: "earthquake",
     icon: <FontAwesomeIcon icon={faHouseCrack} size="sm" />,
     route: "/earthquake",
-    component: <Dashboard/>,
+    component: <Earthquake/>,
   },
   {
     type: "collapse",
@@ -85,7 +91,7 @@ const routes = [
     key: "tsunami",
     icon: <FontAwesomeIcon icon={faWater} size="sm" />,
     route: "/tsunami",
-    component: <Dashboard/>,
+    component: <Tsunami/>,
   },
   {
     type: "collapse",
@@ -93,7 +99,7 @@ const routes = [
     key: "nuclear_event",
     icon: <FontAwesomeIcon icon={faRadiation} size="sm" />,
     route: "/nuclear_event",
-    component: <Dashboard/>,
+    component: <Nuclear/>,
   },
   {
     type: "collapse",

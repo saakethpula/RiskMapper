@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
+
+
 const loadGoogleMapsScript = () => {
     return new Promise((resolve, reject) => {
         if (window.google && window.google.maps) {
@@ -35,7 +37,10 @@ const loadGoogleMapsScript = () => {
     });
 };
 
-const Map = ({ mapType }) => {
+
+const Map = ({ mapType, lat , lng, setLat, setLng }) => {
+
+
     const [mapLoaded, setMapLoaded] = useState(false);
     const [locationFound, setLocationFound] = useState(false);
     const [data, setData] = useState(null);
@@ -98,6 +103,8 @@ const Map = ({ mapType }) => {
                             map: mapInstanceRef.current,
                             title: "You are here!",
                         });
+                        setLat(userLocation.lat);
+                        setLng(userLocation.lng);
 
                         // Fetch hospitals from FastAPI backend
                         try {
@@ -278,7 +285,11 @@ const Map = ({ mapType }) => {
 };
 
 Map.propTypes = {
-    mapType: PropTypes.string.isRequired,
+    mapType: PropTypes.string,
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+    setLat: PropTypes.func,
+    setLng: PropTypes.func,
 };
 
 export default Map;
