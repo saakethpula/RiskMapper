@@ -6,127 +6,99 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import Projects from "layouts/dashboard/components/Projects";
-import PropTypes from "prop-types";
-import Map from "../../new_components/Map";
 
-function Hurricane() {
-    const [hospitalNearbyData, setHospitalNearbyData] = useState([]);
-    const [loading, setLoading] = useState(true);
+function Wildfire() {
+  const { sales, tasks } = reportsLineChartData;
+  const nearestHospitalDistance = hospitalNearbyData[0].distance_miles;
+  const hospitalNearby = hospitalNearbyData.length;
+  const traveltime = hospitalNearbyData[0].distance_miles.replace(" mi", "");
+  const userLat = localStorage.getItem("userLat") || "Not available";
+  const userLng = localStorage.getItem("userLng") || "Not available";
 
-    const [lat, setLat] = useState(null);
-    const [lng, setLng] = useState(null);
-    const [data, setData] = useState([]);  // Initialize as an empty array
-
-    useEffect(() => {
-        if (lat && lng) {
-            const fetchHospitals = async () => {
-                try {
-                    const response = await fetch(
-                        `http://127.0.0.1:8000/hospitals/?lat=${lat}&lng=${lng}&radius=10000`
-                    );
-                    const result = await response.json();
-                    setData(result.hospitals || []);  // Ensure the data is an array
-                    console.log("Data:", result.hospitals);
-                } catch (error) {
-                    console.error("Error fetching hospitals:", error);
-                }
-            };
-
-            fetchHospitals();
-        } else {
-            // If lat and lng are not available, set loading to false
-            setLoading(false);
-        }
-    }, [lat, lng]);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    // Ensure safe access
-    const nearestHospitalDistance = data.length > 0 ? data[0]?.distance_miles : "N/A";
-    const hospitalNearby = data.length;  // Length of hospitals array
-    const traveltime = data.length > 0 ? data[0]?.distance_miles.replace(" mi", "") : "N/A";  // Access first hospital
-
-    return (
-        <DashboardLayout>
-            <DashboardNavbar />
-            <MDBox py={3}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={6} lg={3}>
-                        <MDBox mb={1.5}>
-                            <ComplexStatisticsCard
-                                color="dark"
-                                icon="place"
-                                title="Number of Nearby Hospitals"
-                                count={hospitalNearby}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+55%",
-                                    label: "than last week",
-                                }}
-                            />
-                        </MDBox>
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={3}>
-                        <MDBox mb={1.5}>
-                            <ComplexStatisticsCard
-                                icon="leaderboard"
-                                title="Distance to Nearest Hospital (mi)"
-                                count={nearestHospitalDistance}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+3%",
-                                    label: "than last month",
-                                }}
-                            />
-                        </MDBox>
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={3}>
-                        <MDBox mb={1.5}>
-                            <ComplexStatisticsCard
-                                color="success"
-                                icon="star"
-                                title="Nearest Hospital Rating"
-                                count={traveltime}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+1%",
-                                    label: "than yesterday",
-                                }}
-                            />
-                        </MDBox>
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={3}>
-                        <MDBox mb={1.5}>
-                            <ComplexStatisticsCard
-                                color="primary"
-                                icon="person_add"
-                                title="Risk Level"
-                                count={hospitalNearby}
-                                percentage={{
-                                    color: "success",
-                                    amount: "",
-                                    label: "Just updated",
-                                }}
-                            />
-                        </MDBox>
-                    </Grid>
-                </Grid>
-                <MDBox>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={10} lg={12}>
-                            <Projects mapState={"hospital"} lat={lat} lng={lng} setLat={setLat} setLng={setLng} />
-
-                        </Grid>
-
-                    </Grid>
-
-                </MDBox>
-
+ // Replace with actual user longitude
+  let response = fetch(`http://127.0.0.1:8000/disaster-response?disaster_type=hurricane&lat=${userLat}&lng=${userLng}`)
+  return (
+    <DashboardLayout>
+      <DashboardNavbar />
+      <MDBox py={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="dark"
+                icon="weekend"
+                title="Number of Nearby Hospitals"
+                count={hospitalNearby}
+                percentage={{
+                  color: "success",
+                  amount: "+55%",
+                  label: "than last week",
+                }}
+              />
             </MDBox>
-        </DashboardLayout>
-    );
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                icon="leaderboard"
+                title="Distance to Nearest Hospital (mi)"
+                count={nearestHospitalDistance}
+                percentage={{
+                  color: "success",
+                  amount: "+3%",
+                  label: "than last month",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="success"
+                icon="store"
+                title="Travel Time"
+                count={traveltime}
+                percentage={{
+                  color: "success",
+                  amount: "+1%",
+                  label: "than yesterday",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="primary"
+                icon="person_add"
+                title="Risk Level"
+                count={hospitalNearby}
+                percentage={{
+                  color: "success",
+                  amount: "",
+                  label: "Just updated",
+                }}
+              />
+            </MDBox>
+          </Grid>
+        </Grid>
+        <MDBox>
+          <Grid container spacing={3}>
+
+            <Grid item xs={12} md={10} lg={12}>
+              <Projects mapState={"hospital"} />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <div> {response[1]} </div>
+              </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+            
+            </Grid>
+          </Grid>
+        </MDBox>
+      </MDBox>
+    </DashboardLayout>
+  );
 }
 
 Hurricane.propTypes = {

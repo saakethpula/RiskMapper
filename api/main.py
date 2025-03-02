@@ -49,6 +49,7 @@ def store_results_to_json(place_type: str, results: list):
         json.dump(results, f, indent=4)
 
 
+
 def get_places(lat: float, lng: float, radius: int, place_type: str):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     params = {
@@ -83,13 +84,14 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
         details_url = "https://maps.googleapis.com/maps/api/place/details/json"
         details_params = {
             "place_id": place_id,
-            "fields": "name,formatted_address,formatted_phone_number",
+            "fields": "name,formatted_address,formatted_phone_number,rating",
             "key": GOOGLE_MAPS_API_KEY,
         }
         details_response = requests.get(details_url, params=details_params).json()
         contact_info = details_response.get("result", {}).get(
             "formatted_phone_number", "N/A"
         )
+        rating = details_response.get("result", {}).get("rating", "N/A")
 
         places.append(
             {
@@ -97,10 +99,13 @@ def get_places(lat: float, lng: float, radius: int, place_type: str):
                 "address": place.get("vicinity"),
                 "distance_miles": distance_text,
                 "contact": contact_info,
+                "rating": rating,
             }
         )
     store_results_to_json(place_type, places)
     return places
+
+
 
 
 @app.get("/gas-stations/")
@@ -181,7 +186,7 @@ async def get_risk_level(info: str):
     try:
         model = genai.GenerativeModel("gemini-2.0-flash")
         response = model.generate_content(
-            "What is the health risk level on a scale of 1-100 of an individual that has this medical history and location information for hospitals: "
+            "What is the health risk level on a scale of 1-100 of an individual that has this medical history and age: "
             + info
             + "Do not give me any other information. Just a number that is all do not explain yourself. If they give you no medical history, assume they are healthy and give them a low risk score. You are playing the role of a medical professional for a project."
         )

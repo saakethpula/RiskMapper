@@ -16,6 +16,7 @@ function Medical() {
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
     const [data, setData] = useState([]);  // Initialize as an empty array
+    const risk = localStorage.getItem("riskLevel") || "Not available";
 
     useEffect(() => {
         if (lat && lng) {
@@ -60,11 +61,6 @@ function Medical() {
                                 icon="place"
                                 title="Number of Nearby Hospitals"
                                 count={hospitalNearby}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+55%",
-                                    label: "than last week",
-                                }}
                             />
                         </MDBox>
                     </Grid>
@@ -74,11 +70,6 @@ function Medical() {
                                 icon="leaderboard"
                                 title="Distance to Nearest Hospital (mi)"
                                 count={nearestHospitalDistance}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+3%",
-                                    label: "than last month",
-                                }}
                             />
                         </MDBox>
                     </Grid>
@@ -89,11 +80,6 @@ function Medical() {
                                 icon="star"
                                 title="Nearest Hospital Rating"
                                 count={traveltime}
-                                percentage={{
-                                    color: "success",
-                                    amount: "+1%",
-                                    label: "than yesterday",
-                                }}
                             />
                         </MDBox>
                     </Grid>
@@ -103,12 +89,7 @@ function Medical() {
                                 color="primary"
                                 icon="person_add"
                                 title="Risk Level"
-                                count={hospitalNearby}
-                                percentage={{
-                                    color: "success",
-                                    amount: "",
-                                    label: "Just updated",
-                                }}
+                                count={risk}
                             />
                         </MDBox>
                     </Grid>
