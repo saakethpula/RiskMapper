@@ -215,12 +215,7 @@ async def get_risk_assessment(lat: float, lng: float):
         raise HTTPException(status_code=500, detail=f"Error generating risk assessment: {str(e)}")
 
 @app.get("/disaster-response")
-async def generate_disaster_response(disaster_type: str = Query(..., description="Type of disaster (e.g., earthquake, hurricane, wildfire, flood, tornado, tsunami)"),
-                                      lat: float = Query(..., description="Latitude for disaster location"),
-                                      lng: float = Query(..., description="Longitude for disaster location")):
-    """
-    Provides concise evacuation plans and necessary essentials based on the disaster type and coordinates.
-    """
+async def generate_disaster_response(disaster_type: str):
 
     # Normalize input (convert to lowercase and remove leading/trailing spaces)
     disaster_type = disaster_type.strip().lower()
@@ -235,7 +230,11 @@ async def generate_disaster_response(disaster_type: str = Query(..., description
 
     try:
         # Dynamic prompt structure
-        prompt = f"Provide a concise evacuation plan for a {disaster_type} with each step on a new line and a list of essential survival items."
+        prompt = (f"Provide a concise evacuation plan for a {disaster_type} and a list of essential survival items."
+                "The response should be formatted as follows:\n"
+                "'Evacuation Plan: [plan]\n\n Essentials: [items]"
+                "Return only the plan and items with no additional text or formatting."
+        )
 
         # Call Gemini AI
         model = genai.GenerativeModel("gemini-2.0-flash")
@@ -250,6 +249,7 @@ async def generate_disaster_response(disaster_type: str = Query(..., description
         #ai_response_text = re.sub(r'\s+', ' ', ai_response_text)
 
         return {
+            "disaster_type": disaster_type,
             "response": ai_response_text,
         }
     except Exception as e:
@@ -272,6 +272,14 @@ async def generate_random_disaster():
 
     # Return the disaster type and coordinates
     return {"disaster_type": disaster_type, "coordinates": {"lat": lat, "lng": lng}}
+
+@app.get("/simulation/")
+async def generate_simulation():
+    coordinates = await generate_random_disaster()
+    lat = coordinates["coordinates"]["lat"]
+    lng = coordinates["coordinates"]["lng"]
+    return await generate_disaster_response(coordinates["disaster_type"], lat, lng)
+
 
 @app.get("/disasters-near-me/")
 async def get_disasters_near_me(lat: float, lng: float):
