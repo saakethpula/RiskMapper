@@ -2,5 +2,14 @@
   "dependencies": {
     "@google/generative-ai": "^0.22.0",
     "google": "^2.1.0"
+    
+  },
+  "homepage": "https://myusername.github.io/material-dashboard-react-main",
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   }
+
 }
