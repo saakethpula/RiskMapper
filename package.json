@@ -11,5 +11,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build"
   }
+  ,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saakethpula/material-dashboard-react-main.git"
+  }
+  
 
 }
